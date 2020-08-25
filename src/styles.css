@@ -1,1 +1,55 @@
 /* You can add global styles to this file, and also import other style files */
+body { margin-top:50px; }
+
+.form-card {
+    padding: 30px;
+    margin-top: 40px;
+}
+.card-domino {
+  margin: 10px;
+  border-radius: 20px;
+}
+.card-list-users {
+  margin: 20px;
+  padding: 20px 10px 20px 20px;
+  border-radius: 10px;
+}
+.allSection {
+  margin-top: 80px;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+.ngx-pagination .current {
+  background: #28a745!important;
+}
+.card-domino .card-body {
+  padding: 30px;
+}
+.card-domino h2{
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 20px;
+} 
+.scroll {
+  max-height: 350px;
+  overflow-y: auto;
+}
+.grow {
+    display: inline-block;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  }
+  .grow:hover, .grow:focus, .grow:active {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+
+@media print { 
+  .isPrinting> * {display: none; } 
+  .isPrinting app-print-layout {display: block; } 
+}

@@ -1,0 +1,206 @@
+<section class="allSection" >
+  <div class="col-md-12" >
+    <div class="row" >
+      <div class="col-md-6" >
+          <div class="card p-5 shadow-lg" >
+              <h3 class="card-title text-center">
+                Registro de Jugador
+              </h3>
+            <form class="form-row" [formGroup]="FormJugador" (ngSubmit)="add(FormJugador.value, copiarDatos('nameCountry'), copiarDatos('nameState'),copiarDatos('nameCity')); eraseForm()" >
+              <div class="form-group col-md-6">
+                <label for="name">Nombre</label>
+                <input (keyup)="toMayusculas($event.target)" type="text" formControlName="name" class="form-control" required minlength="3">
+                <small id="emailHelp" class="form-text text-muted">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"  class="bi bi-exclamation-triangle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 5zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                      </svg> 
+                  Solo un Nombre</small>
+              </div> 
+              <div class="form-group col-md-6">
+                <label for="lastName">Apellidos</label>
+                <input (keyup)="toMayusculas($event.target)" type="text" formControlName="lastName" class="form-control">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="cc">*DNI / CC</label>
+                <input id="cc" type="number" formControlName="cc" class="form-control" (blur)="validateExistingDni($event.target.value)">
+                <small id="dniError" class="d-none invalid-feedback">
+                  Este DNI ya esta registrado
+                </small>
+                <small id="dniSuccess" class="d-none valid-feedback">
+                  DNI correcto
+                </small>
+                <small id="dniEmpity" class="d-none invalid-feedback">
+                  Campo vacio o con errores
+                </small>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="phone">Celular</label>
+                <input type="phone" formControlName="phone" class="form-control">
+              </div>
+              <div class="form-group col-md-12">
+                <label for="mail">*Correo</label>
+                <input type="mail" id="mail" formControlName="mail" class="form-control" (blur)="validateExistingMail($event.target.value); generateRandomPass()">
+                <small id="mailError" class="d-none invalid-feedback">
+                  Este correo ya esta registrado
+                </small>
+                <small id="mailSuccess" class="d-none valid-feedback">
+                  Correo Valido
+                </small>
+                <small id="mailEmpity" class="d-none invalid-feedback">
+                  Campo vacio o con errores
+                </small>
+              </div>
+              <!--
+              <div class="form-group col-md-6">
+                <div class="form-group">
+                  <label for="email">Password</label>
+                  <div class="input-group">
+                    <input
+                      [type]="fieldTextType ? 'text' : 'password'"
+                      class="form-control"
+                      formControlName="pass"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text bg-dark">
+                        <a (click)="toggleFieldTextType()">
+                          <svg *ngIf="!fieldTextType" color="#fff" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-lock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"/>
+                            <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"/>
+                          </svg>
+                          <svg *ngIf="fieldTextType" color="#fff" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-unlock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"/>
+                            <path fill-rule="evenodd" d="M8.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"/>
+                          </svg>
+                        </a>  
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              -->
+              <div class="form-group col-md-12">
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label class="control-label" for="country">País</label>
+                    <select *ngIf="getCountries()" formControlName="selectedCountry" (change)="onSelectCountry($event.target.value)" class="form-control input-lg">
+                    <option value="0">Select Country</option>
+                    <option *ngFor="let country of getCountries()" id="country"  value= {{country.id}}>{{country.name}}</option>
+                    </select>  
+                    </div>
+                  <div class="form-group col-md-4">
+                    <label class="control-label" for="States">Estado</label>
+                    <select id="state" *ngIf="states" formControlName="selectedState" (change)="onSelectState($event.target.value)" class="form-control input-lg">
+                    <option value="0">Select State</option>
+                    <option *ngFor="let state of states" id={{state.id}} value={{state.id}}>{{state.name}}</option>
+                    </select>
+                    </div>
+                  <div class="form-group col-md-4">
+                      <label class="control-label" for="City">Ciudad</label>
+                      <select id="city" class="form-control input-lg" formControlName="selectedCity" (change)="addAddress(FormJugador.value.selectedCountry, FormJugador.value.selectedState, FormJugador.value.selectedCity)" >
+                      <option *ngIf="!selectedState"  value="0">Select City</option>
+                      <option *ngFor="let city of cities" id={{city.id}} value={{city.name}} >{{city.name}}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-12" >
+                      <div class="row">
+                        <div style="font-weight: 600; font-size: 18px;" class="col-md-4" formControlName="nameCountry" id="nameCountry">
+                        </div>
+                        <div style="font-weight: 600; font-size: 18px;" class="col-md-4"  formControlName="nameState" id="nameState">
+                        </div>
+                        <div style="font-weight: 600; font-size: 18px;" class="col-md-4" formControlName="nameCity" id="nameCity" >
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div class="form-group col-md-12">
+                <label for="address">Dirección</label>
+                <input type="text" formControlName="address" class="form-control">
+              </div>
+              <div class="col-md-12" >  
+                <h5>
+                  Escoge Pareja
+                </h5>
+                <small>
+                  Este dato se podra editar o agregar posteriormente
+                </small>
+              </div>
+              <!--BARRA DE BUSQUEDA DE PAREJA-->
+                <div id="searchBar" class="col-md-8" >
+                  <form [formGroup]="FormSearch" (ngSubmit)="searchingPlayer(FormSearch.value)">
+                    <div class="input-group" >
+                      <input formControlName="dataPlayer" (keyup)="toMayusculas($event.target)" type="text" class="form-control" placeholder=" ¿a quien buscas?">
+                      <div class="input-group-append">
+                        <select formControlName="selectSearch">
+                            <option selected>DNI</option>
+                            <option>Nombre</option>
+                        </select>
+                        <button class="btn btn-success" type="submit"> 
+                          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                              <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                          </svg>  Buscar
+                      </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!--Barra de busqueda de jugador-->
+                  <select formControlName="idPareja" id="searchResult" class="form-control input-lg col-md-4">
+                    <!--<option value="0">Escoge pareja</option>-->
+                    <option *ngFor="let player of playerFind" value={{player._id}}>{{player.nombre}} || {{player.DNI}}</option>
+                  </select>
+              <div class="form-group col-md-12 mt-3" >
+                <div class="alert alert-danger" *ngIf="!FormJugador.valid"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-exclamation-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                </svg> Tienes Errores, hay <b>campos o espacios vacios</b> o caracteres incorrectos</div>
+                <button class="btn btn-success col-md-3" id="enviar" type="submit" [disabled]="FormJugador.invalid">
+                Guardar</button>
+                <button class="btn btn-danger offset-1 col-md-3" type="reset" (click)="eraseForm()" >
+                  Borrar
+                </button>
+              </div>
+        
+            </form>
+          </div>
+      </div>
+      <!--LISTADO DE JUGADORES-->
+      <div class="col-md-6">
+          <div class="table-responsive card shadow-lg" >
+            <table class="table table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="4" class="text-center">
+                    <h3>Jugadores Registrados</h3>
+                    <span [class.d-none]= allPlayers  class="spinner-border spinner-border text-success" role="status" aria-hidden="true"></span>
+                  </th>
+                </tr>
+                <tr>
+                  <th>CC/DNI</th>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let player of allPlayers | paginate: { itemsPerPage: 7, currentPage: p }">
+                  <td><span class="badge badge-success">{{ player.DNI }}</span></td>
+                  <td>{{ player.nombre }}</td>
+                  <td>{{ player.apellido }}</td>
+                  <td>{{ player.estado }}</td>
+                </tr>
+                <tr>
+                  <td colspan="4">
+                    <pagination-controls
+                    previousLabel="Atras"
+    nextLabel="Sig" (pageChange)="p = $event"></pagination-controls>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+

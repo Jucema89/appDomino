@@ -1,0 +1,198 @@
+<section class="allSection">
+    <div class="row row-cols-1 row-cols-md-2">
+        <div class="col mb-4">
+          <div class="card p-4 shadow-lg">
+            <div class="card-body">
+              <h5 class="card-title">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383l-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>
+                </svg>
+                Enviar Mensaje</h5>
+              <small class="card-text">Si envias los mensajes de aqui se veran en las cuentas de cada jugador, no se enviaran a sus correos a menos que lo indiques asi.</small>
+              <div class="form-group mt-2">
+                <label>Busca Jugador</label>
+              <div id="searchBar">
+                <form [formGroup]="FormSearch" (ngSubmit)="searchingPlayer(FormSearch.value)">
+                    <div class="input-group">
+                      <input formControlName="dataPlayer" (keyup)="toMayusculas($event.target)" type="text" class="form-control" placeholder=" ¿a quien buscas?">
+                      <div class="input-group-append">
+                        <select formControlName="selectSearch">
+                            <option selected>DNI</option>
+                            <option>Nombre</option>
+                        </select>
+                        <button class="btn btn-success" type="submit"> 
+                          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                              <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                          </svg>  Buscar
+                      </button>
+                      </div>
+                    </div>
+                    </form>
+                </div>
+              </div>
+
+              <form [formGroup]="FormMail" (ngSubmit)="sendMsj(FormMail.value)">
+                <div class="form-group">
+                    <select formControlName="playerDni" class="form-control">
+                        <option *ngFor="let player of playerFind" value={{player.DNI}}>{{player.nombre}} || {{player.DNI}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Asunto</label>
+                    <input formControlName="subject" type="text" class="form-control"/>
+                </div>
+                <div class="form-group">
+                  <label>Mensaje</label>
+                  <textarea formControlName="message" type="text" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="col-md-12" >
+                  <div class="row" >
+                    <div class="form-group form-check col-md-10">
+                      <input formControlName="sendToMail" type="checkbox" class="form-check-input">
+                      <label class="form-check-label" for="exampleCheck1">Enviar a Email</label><br>
+                      <small>
+                        Al enviar emails ten presente <b>el limite diario de tu SMTP</b>
+                    </small>
+                    </div>
+                    <div class="form-group col-md-2" >
+                      <button type="submit" [disabled]="FormMail.invalid" class="btn btn-lg btn-success">Enviar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col mb-4">
+          <div class="card p-4 shadow-lg">
+            <div class="card-body">
+              <h5 class="card-title"> 
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-inboxes-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M.125 11.17A.5.5 0 0 1 .5 11H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0 .5.5 0 0 1 .5-.5h5.5a.5.5 0 0 1 .496.562l-.39 3.124A1.5 1.5 0 0 1 14.117 16H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .121-.393zM3.81.563A1.5 1.5 0 0 1 4.98 0h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1-.78.624l-3.7-4.624A.5.5 0 0 0 11.02 1H4.98a.5.5 0 0 0-.39.188L.89 5.812a.5.5 0 1 1-.78-.624L3.81.563z"/>
+                  <path fill-rule="evenodd" d="M.125 5.17A.5.5 0 0 1 .5 5H6a.5.5 0 0 1 .5.5 1.5 1.5 0 0 0 3 0A.5.5 0 0 1 10 5h5.5a.5.5 0 0 1 .496.562l-.39 3.124A1.5 1.5 0 0 1 14.117 10H1.883A1.5 1.5 0 0 1 .394 8.686l-.39-3.124a.5.5 0 0 1 .121-.393z"/>
+                </svg>
+                 Todos los mensajes 
+                <button class="btn btn-success btn-sm" (click)="getAllMsj()">
+                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-repeat" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M2.854 7.146a.5.5 0 0 0-.708 0l-2 2a.5.5 0 1 0 .708.708L2.5 8.207l1.646 1.647a.5.5 0 0 0 .708-.708l-2-2zm13-1a.5.5 0 0 0-.708 0L13.5 7.793l-1.646-1.647a.5.5 0 0 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0 0-.708z"/>
+                    <path fill-rule="evenodd" d="M8 3a4.995 4.995 0 0 0-4.192 2.273.5.5 0 0 1-.837-.546A6 6 0 0 1 14 8a.5.5 0 0 1-1.001 0 5 5 0 0 0-5-5zM2.5 7.5A.5.5 0 0 1 3 8a5 5 0 0 0 9.192 2.727.5.5 0 1 1 .837.546A6 6 0 0 1 2 8a.5.5 0 0 1 .501-.5z"/>
+                  </svg> Actualizar
+                </button>
+              </h5>
+              <p class="card-text">Listado de Mensajes enviados</p>
+                  <table class="table table-bordered">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">
+                          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+                          </svg>
+                        </th>
+                        <th scope="col">Jugador</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="!allMsj">
+                        <td colspan="4">
+                          <div class="card-body text-center">
+                            <div class="spinner-border text-success
+                            " role="status" style="width: 2rem; height: 2rem;">
+                              <span class="sr-only">cargando ...</span>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let msj of allMsj | paginate: { itemsPerPage: 5, currentPage: p } let i = index">
+                        <th scope="row">{{i + 1}}</th>
+                        <td>{{msj.playerNombre}}</td>
+                        <td>
+                          <span *ngIf="msj.estado === 'sin leer'" class="badge badge-secondary">
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+                            </svg>
+                          </span>
+                          <span *ngIf="msj.estado === 'leido'" class="badge badge-success" >
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-check-all" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M8.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14l.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z"/>
+                            </svg>
+                          </span>
+                            {{msj.estado}}
+                        </td>
+                        <td>
+                          <!--modal mensajes-->
+                        <div class="modal fade" id="modal{{i}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <p class="modal-title"><b>Mensaje para: </b>{{msj.playerNombre}}</p>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <p><b>Asunto: </b>{{msj.subject}}</p>
+                                <p>
+                                  <b>Mensaje: </b>
+                                  {{msj.message}}
+                                </p>
+                                <tr>
+                                <h6>Respuesta: </h6>
+                                <blockquote class="blockquote">
+                                  <p class="mb-0">
+                                    {{msj.reply}}
+                                  </p>
+                                  <footer class="blockquote-footer">
+                                    {{msj.playerNombre}}</footer>
+                                </blockquote>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!--modal mensajes fin-->
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-secondary" data-toggle="modal" (click)="showModal(i)">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-open" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8.47 1.318a1 1 0 0 0-.94 0l-6 3.2A1 1 0 0 0 1 5.4v.818l5.724 3.465L8 8.917l1.276.766L15 6.218V5.4a1 1 0 0 0-.53-.882l-6-3.2zM15 7.388l-4.754 2.877L15 13.117v-5.73zm-.035 6.874L8 10.083l-6.965 4.18A1 1 0 0 0 2 15h12a1 1 0 0 0 .965-.738zM1 13.117l4.754-2.852L1 7.387v5.73zM7.059.435a2 2 0 0 1 1.882 0l6 3.2A2 2 0 0 1 16 5.4V14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5.4a2 2 0 0 1 1.059-1.765l6-3.2z"/>
+                              </svg>
+                            </button>
+                            <button type="button" [swal]="eliminarMsjs" class="btn btn-danger">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                              </svg>
+                            </button>
+                            <swal
+                              #eliminarMsjs
+                              title="Eliminaras este Mensaje"
+                              text="Perderas el mensaje y sus respuestas"
+                              icon="question"
+                              [showCancelButton]="true"
+                              [focusCancel]="true"
+                              (confirm)= "deleteMsj(msj._id)"
+                              [swalOptions]="{ confirmButtonText: 'Si Eliminar', cancelButtonText:'Cancelar' }">
+                            </swal>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="4">
+                          <pagination-controls previousLabel="Atras"
+                      nextLabel="Sig" (pageChange)="p = $event"></pagination-controls>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+</section>

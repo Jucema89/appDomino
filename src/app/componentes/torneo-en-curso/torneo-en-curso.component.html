@@ -1,0 +1,245 @@
+<!--TORNEO FASE 1-->
+<section class="allSection" id="fase1">
+    <div class="modal fade" id="popSelector" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog text-center" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+                <div class="col-md-12 text-center" >
+                    <table>
+                        <tr>
+                            <th class="col-md-12 text-center">
+                                <h3 class="modal-title" id="staticBackdropLabel">Selecciona un Torneo <span class="badge badge-success" >
+                                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trophy" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M3 1h10c-.495 3.467-.5 10-5 10S3.495 4.467 3 1zm0 15a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1H3zm2-1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1H5z"/>
+                                  <path fill-rule="evenodd" d="M12.5 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-3 2a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm-6-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-3 2a3 3 0 1 1 6 0 3 3 0 0 1-6 0z"/>
+                                  <path d="M7 10h2v4H7v-4z"/>
+                                  <path d="M10 11c0 .552-.895 1-2 1s-2-.448-2-1 .895-1 2-1 2 .448 2 1z"/>
+                                </svg></span></h3>
+                            </th>
+                        </tr>
+                        <tr *ngFor="let tor of torActive">
+                            <th class="col-md-12 text-center">
+                                <button  style="margin-left:30px;" (click)=" getOneTorneo(tor._id); sendIdTor(tor._id)" data-dismiss="modal"  class="btn btn-outline-success grow"> {{ tor.nombre }}
+                                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                    <path fill-rule="evenodd" d="M7.646 11.354a.5.5 0 0 1 0-.708L10.293 8 7.646 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
+                                    <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
+                                  </svg>
+                                </button>
+                            </th>
+                        </tr>
+                        <tr>
+                            <p>Si aun no hay torneos, crea uno <button class="btn btn-success" (click)="goCreateTor()" data-dismiss="modal" >Volver</button></p>
+                        </tr>
+                        
+                    </table>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="row">
+        <div class="col-md-4" id="listado-jugadores">
+          <div id="Noplayers" class="col-md-12 d-none text-center">
+            <svg width="7em" height="7em" viewBox="0 0 16 16" class="bi bi-emoji-laughing p-4" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path fill-rule="evenodd" d="M12.331 9.5a1 1 0 0 1 0 1A4.998 4.998 0 0 1 8 13a4.998 4.998 0 0 1-4.33-2.5A1 1 0 0 1 4.535 9h6.93a1 1 0 0 1 .866.5z"/>
+              <path d="M7 6.5c0 .828-.448 0-1 0s-1 .828-1 0S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 0-1 0s-1 .828-1 0S9.448 5 10 5s1 .672 1 1.5z"/>
+            </svg>
+            <h3 style="color: gray">
+              Todos los Jugadores estan en el Torneo.
+            </h3>
+            <small>
+              Puedes crear más jugadores, pero no podras cargarlos a este torneo, recuerda tener todos tus jugadores registrados aquí antes de cargarlos al torneo.
+            </small><br>
+            <button class="btn btn-success" (click)="redirect('jugador')">
+              Crear Jugadores
+            </button>
+          </div>
+          <div>
+            <!--Selector de filtros-->
+            <div class="btn-toolbar" role="toolbar" id="selectorDeFiltros">
+              <div class="btn-group btn-block" role="group">
+                <button type="button" (click)="dnoneAuto('searchBar', false); dnoneAuto('listaJugadores', true)" class="btn btn-outline-success">Buscador</button>
+                <button type="button" (click)="dnoneAuto('searchBar', true); dnoneAuto('listaJugadores', false); dnoneAuto('searchResult', true)" class="btn btn-outline-success">Listado</button>
+                <button type="button" (click)="dnoneAuto('searchBar', false); dnoneAuto('listaJugadores', false)" class="btn btn-outline-success">Ambos</button>
+              </div>
+            </div>
+            <div id="searchBar" class="card shadow-lg m-3" >
+              <form [formGroup]="FormSearch" (ngSubmit)="searchingPlayer(FormSearch.value)">
+                <div class="input-group" >
+                  <input formControlName="dataPlayer" (keyup)="toMayusculas($event.target)" type="text" class="form-control" placeholder=" ¿a quien buscas?">
+                  <div class="input-group-append">
+                    <select formControlName="selectSearch">
+                        <option>DNI</option>
+                        <option>Nombre</option>
+                    </select>
+                    <button class="btn btn-success" type="submit"> 
+                      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                          <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                      </svg>  Buscar
+                  </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <!--Barra de busqueda de jugador-->
+            <div id="searchResult" class="d-none">
+              <table class="table table-hover" style="background-color: white;">
+                <thead class="bg-success text-light">
+                  <tr>
+                    <th>Jugador</th>
+                    <th>DNI</th>
+                    <th>Agregar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let player of playerFind" id= {{player.DNI}}>
+                    <td *ngIf="!player.nombre"> 
+                      Sin Resultados
+                    </td>
+                    <td>{{player.nombre}} </td>
+                    <td><span class="badge badge-dark"> DNI: {{player.DNI}}</span></td>
+                    <td>
+                      <button style="margin-left: 10px;" class="btn btn-sm btn-success" (click)="addPlayerAronda(player)">
+                        <svg width="1.7em" height="1.7em" viewBox="0 0 16 16" class="bi bi-caret-right-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                        </svg>
+                      </button>
+                    </td>
+                    
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="noResult" class="d-none card shadow-lg p-2 m-2" >
+              <h4 class="text-center card-title">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-emoji-expressionless" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                  <path fill-rule="evenodd" d="M4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm5 0a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+                </svg> Sin Resultados
+              </h4>
+            </div>
+          </div>
+          <!--LISTA DE JUGADORES PARA AGREGAR-->
+          <div id="listaJugadores">
+            <div class="row" >
+              <div class="col-md-4 p-2 bg-success text-white">
+                <strong>Jugador</strong>
+              </div>
+              <div class="col-md-4 p-2 bg-success text-white">
+                <strong>DNI</strong>
+              </div>
+              <div class="col-md-4 p-2 bg-success text-white">
+                <strong>Agregar</strong>
+              </div>
+              <div class="col-md-12 table-responsive" style="height: 400px">
+                <table  class="table table-hover" style="background-color: white">
+                  <tbody *ngFor="let player of allPlayers">
+                    <tr id= {{player.doc.DNI}}>
+                      <td>{{player.doc.nombre}} </td>
+                      <td><span class="badge badge-dark"> DNI: {{player.doc.DNI}}</span></td>
+                      <td>
+                        <button style="margin-left: 10px;" class="btn btn-sm btn-success" (click)="addPlayerAronda(player.doc)">
+                          <svg width="1.7em" height="1.7em" viewBox="0 0 16 16" class="bi bi-caret-right-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+            </div>
+           
+          </div>
+        </div>
+        <div class="col-md-8 container" id="estado-torneo" > 
+            <div class="row">
+               <div  class="card shadow-lg card-domino" *ngFor="let dato of oneTor" >
+                  <div class="card bg-dark text-white">
+                    <img src="assets/images/torneo-pic.png" class="card-img-top">
+                    <div  class="card-img-overlay">
+                      <div class="row" >
+                        <div class="col-md-6">
+                            <span class="badge badge-success" > Inicia: {{ dato.fechaInicio }}</span>
+                            <h2 class="card-title">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trophy" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 1h10c-.495 3.467-.5 10-5 10S3.495 4.467 3 1zm0 15a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1H3zm2-1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1H5z"/>
+                                <path fill-rule="evenodd" d="M12.5 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-3 2a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm-6-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-3 2a3 3 0 1 1 6 0 3 3 0 0 1-6 0z"/>
+                                <path d="M7 10h2v4H7v-4z"/>
+                                <path d="M10 11c0 .552-.895 1-2 1s-2-.448-2-1 .895-1 2-1 2 .448 2 1z"/>
+                              </svg>
+                             {{ dato.nombre }}</h2>
+                            <p><span id="TorId" class="badge badge-light">{{ dato._id }}</span></p>
+                            <p class="card-text">Termina: {{ dato.fechaFinal }}</p>
+                            <div style="padding-bottom: 10px;" class="text-center">
+                                <button (click)="showModalSelector()" class="btn btn-outline-light" >Cambiar de Torneo </button>
+                            </div>
+                            <div style="padding-bottom: 20px;">
+                                <p><b>Tipo: </b> {{ dato.tipo }} </p>
+                                <p><b>Modalidad: </b> {{ dato.modoJuego }} | {{ dato.modoIndividual }}</p>
+                                <p><b>Sistema: </b> {{ dato.sistema }}</p>
+                                <p><b>Meta de Juego: </b>{{ dato.metaJuego }}</p>
+                                <p><b>No de Jugadores: </b> {{ dato.numeroParticipantes }}</p>
+                                <p><b>No de Mesas: </b> {{ dato.mesas }}</p>
+                                <p><b>Ubicación: </b> {{ dato.estado }} | {{ dato.ciudad }}</p>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                              <table class="table table-hover" style="background-color: white;">
+                                <thead class="bg-success text-light">
+                                  <tr>
+                                    <th>Jugador</th>
+                                    <th>DNI</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let player of playersInRonda | paginate: { id:'RondaPage', itemsPerPage: 5, currentPage: p }">
+                                    <td>{{player.nombre}} </td>
+                                    <td><span class="badge badge-success"> DNI: {{player.DNI}}</span></td>
+                                  </tr>
+                                  <tr class="table-active">
+                                    <td colspan="2">
+                                      <pagination-controls id="RondaPage"
+                                      previousLabel="Atras"
+                      nextLabel="Sig" (pageChange)="p = $event"></pagination-controls>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+            </div>
+            <div class="col-md-12 text-center" *ngFor="let dato of oneTor">
+              {{nRamdon}}
+                <button (click)="changeFases(dato._id); sendIdTor(dato._id)"
+                 class="btn btn-success btn-lg">Continuar</button>
+                 <button class="btn btn-info" (click)="sorteAleatorioDeMesas()">
+                   Sorteo
+                 </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--TORNEO FASE 2-->
+<section id="fase2" class="allSection d-none">
+    <div class="row">
+        <div class="col-md-12">
+          <div id="Body-Mesas" class="row" *ngFor="let dato of oneTor"> 
+              <app-mesa *ngFor="let i of [].constructor(dato.mesas); index as t" [numberTable]="t+1" 
+                [playersINronda]="this.playersInRonda" [nRonda]="this.nRonda" [idTorneo]="this.idTor" class="col-md-4">
+              </app-mesa>
+          </div>
+        </div>
+      </div>
+</section>
+

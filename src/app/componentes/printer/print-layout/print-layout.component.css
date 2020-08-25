@@ -1,0 +1,13 @@
+.header, .header-space,
+.footer, .footer-space { height: 20px; }
+.header { position: fixed; top: 0; }
+.footer { position: fixed; bottom: 0; }
+.td {
+  border-top: 3px solid #000000;
+}
+
+@media screen {
+  :host {
+    display: none;
+  }
+}

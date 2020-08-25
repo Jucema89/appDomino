@@ -1,0 +1,194 @@
+<nav class="navbar navbar-expand-md navbar-light fixed-bottom">
+    <div class="dropup">
+        <a class="btn btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Torneo Actual
+        </a>
+        <div class="dropdown-menu shadow-lg" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item btn-success" (click)="getRankingTorPos()" data-toggle="modal" data-toggle="modal" data-target="#rankingTor" > 
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-list-ol" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>
+              <path d="M1.713 11.865v-.474H2c.217 0 .363-.137.363-.317 0-.185-.158-.31-.361-.31-.223 0-.367.152-.373.31h-.59c.016-.467.373-.787.986-.787.588-.002.954.291.957.703a.595.595 0 0 1-.492.594v.033a.615.615 0 0 1 .569.631c.003.533-.502.8-1.051.8-.656 0-1-.37-1.008-.794h.582c.008.178.186.306.422.309.254 0 .424-.145.422-.35-.002-.195-.155-.348-.414-.348h-.3zm-.004-4.699h-.604v-.035c0-.408.295-.844.958-.844.583 0 .96.326.96.756 0 .389-.257.617-.476.848l-.537.572v.03h1.054V9H1.143v-.395l.957-.99c.138-.142.293-.304.293-.508 0-.18-.147-.32-.342-.32a.33.33 0 0 0-.342.338v.041zM2.564 5h-.635V2.924h-.031l-.598.42v-.567l.629-.443h.635V5z"/>
+            </svg> Ranking Torneo</a>
+          <!--<a class="dropdown-item btn-success" (click)="allMesasRandom()"> 
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-shuffle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M12.646 1.146a.5.5 0 0 1 .708 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 0 1-.708-.708L14.793 4l-2.147-2.146a.5.5 0 0 1 0-.708zm0 8a.5.5 0 0 1 .708 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 0 1-.708-.708L14.793 12l-2.147-2.146a.5.5 0 0 1 0-.708z"/>
+            <path fill-rule="evenodd" d="M0 4a.5.5 0 0 1 .5-.5h2c3.053 0 4.564 2.258 5.856 4.226l.08.123c.636.97 1.224 1.865 1.932 2.539.718.682 1.538 1.112 2.632 1.112h2a.5.5 0 0 1 0 1h-2c-1.406 0-2.461-.57-3.321-1.388-.795-.755-1.441-1.742-2.055-2.679l-.105-.159C6.186 6.242 4.947 4.5 2.5 4.5h-2A.5.5 0 0 1 0 4z"/>
+            <path fill-rule="evenodd" d="M0 12a.5.5 0 0 0 .5.5h2c3.053 0 4.564-2.258 5.856-4.226l.08-.123c.636-.97 1.224-1.865 1.932-2.539C11.086 4.93 11.906 4.5 13 4.5h2a.5.5 0 0 0 0-1h-2c-1.406 0-2.461.57-3.321 1.388-.795.755-1.441 1.742-2.055 2.679l-.105.159C6.186 9.758 4.947 11.5 2.5 11.5h-2a.5.5 0 0 0-.5.5z"/>
+          </svg> Mesas Aleatorias</a>-->
+          <a class="dropdown-item btn-success" [swal]="endTorneo"> 
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-power" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M5.578 4.437a5 5 0 1 0 4.922.044l.5-.866a6 6 0 1 1-5.908-.053l.486.875z"/>
+              <path fill-rule="evenodd" d="M7.5 8V1h1v7h-1z"/>
+            </svg> Terminar Torneo</a>
+          <a class="dropdown-item btn-success" [swal]="creaRonda">
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-reply-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.079 11.9l4.568-3.281a.719.719 0 0 0 0-1.238L9.079 4.1A.716.716 0 0 0 8 4.719V6c-1.5 0-6 0-7 8 2.5-4.5 7-4 7-4v1.281c0 .56.606.898 1.079.62z"/>
+            </svg> Siguiente Ronda</a>
+        </div>
+        <swal
+          #creaRonda
+          title="Seguro Crearas la Siguiente Ronda?"
+          text="Guardaras los resultados de las mesas en el torneo."
+          icon="question"
+          [showCancelButton]="true"
+          [focusCancel]="true"
+          (confirm)="createRonda()"
+          [swalOptions]="{ confirmButtonText: 'Si Crear Ronda', cancelButtonText:'Cancelar' }">
+        </swal>
+        <swal
+          #endTorneo
+          title="Seguro Terminarás este Torneo?"
+          text="Esta Ronda se guardara y se pasaran los resultados al Ranking Nacional"
+          icon="question"
+          [showCancelButton]="true"
+          [focusCancel]="true"
+          (confirm)="finTorneo()"
+          [swalOptions]="{ confirmButtonText: 'Terminar Torneo', cancelButtonText:'Cancelar' }">
+        </swal>
+      </div>
+      <button class="btn btn-dark ml-2">
+          Ronda  <span class="badge badge-light">{{nRonda}}</span>
+      </button>
+</nav>
+<!--MODAL MESAS
+  <div class="modal fade" id="allMesas" tabindex="-1" role="dialog" 
+        aria-labelledby="allMesas" aria-hidden="true">
+    <div class="modal-dialog modal-xl col-md-12">
+      <div class="modal-content row">
+        <div class="modal-header">
+          <h5 class="modal-title text-center col-md-11" id="exampleModalLabel">Resultados de Mesas </h5>
+          <svg width="2em" height="2em" data-dismiss="modal" aria-label="Close" viewBox="0 0 16 16" class="bi bi-x-square-fill col-md-1" fill="#FF0000" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm9.854 4.854a.5.5 0 0 0-.708-.708L8 7.293 4.854 4.146a.5.5 0 1 0-.708.708L7.293 8l-3.147 3.146a.5.5 0 0 0 .708.708L8 8.707l3.146 3.147a.5.5 0 0 0 .708-.708L8.707 8l3.147-3.146z"/>
+          </svg>
+        </div>
+        <div class="modal-body row">
+          <table class="table table-bordered shadow p-3 m-3 col-md-4" *ngFor="let table of tables">
+            <thead class="thead-dark">
+                        <tr>
+                          <th scope="col">
+                            {{table.doc._id}}
+                          </th>
+                          <th scope="col">
+                            <span class="btn btn-success">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4a.5.5 0 0 0-1 0v3.5H4a.5.5 0 0 0 0 1h3.5V12a.5.5 0 0 0 1 0V8.5H12a.5.5 0 0 0 0-1H8.5V4z"/>
+                              </svg>
+                            </span>
+                          </th>
+                          <th scope="col">
+                            <span class="btn btn-danger" >
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-dash-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4 7.5a.5.5 0 0 0 0 1h8a.5.5 0 0 0 0-1H4z"/>
+                              </svg>
+                            </span>
+                          </th>
+                          <th scope="col">Efectividad</th>
+                        </tr>
+            </thead>
+            <tbody>
+              <tr>
+                          <th scope="row">{{table.doc.p11.nombre}}</th>
+                          <td>{{table.doc.p11.pts_favor}}</td>
+                          <td>{{table.doc.p11.pts_contra}}</td>
+                          <td>
+                            <span class="badge badge-warning">
+                              {{table.doc.p11.efectividad}}
+                            </span>
+                          </td>
+              </tr>
+              <tr>
+                          <th scope="row">{{table.doc.p12.nombre}}</th>
+                          <td>{{table.doc.p12.pts_favor}}</td>
+                          <td>{{table.doc.p12.pts_contra}}</td>
+                          <td>
+                            <span class="badge badge-warning">
+                              {{table.doc.p12.efectividad}}
+                            </span>
+                          </td>
+              </tr>
+              <tr>
+                          <th scope="row">{{table.doc.p21.nombre}}</th>
+                          <td>{{table.doc.p21.pts_favor}}</td>
+                          <td>{{table.doc.p21.pts_contra}}</td>
+                          <td>
+                            <span class="badge badge-warning">
+                              {{table.doc.p21.efectividad}}
+                            </span>
+                          </td>
+              </tr>
+              <tr>
+                          <th scope="row">{{table.doc.p22.nombre}}</th>
+                          <td>{{table.doc.p22.pts_favor}}</td>
+                          <td>{{table.doc.p22.pts_contra}}</td>
+                          <td>
+                            <span class="badge badge-warning">
+                              {{table.doc.p22.efectividad}}
+                            </span>
+                          </td>
+              </tr>
+              <tr>
+                          <td colspan="2">
+                            <p class="card-text"><small class="text-muted"><b>Juez: </b>{{table.doc.juez.nombre}}</small></p>
+                          </td>
+                          <td colspan="2">
+                            <button class="btn btn-dark">
+                              PARTIDAS: 
+                              <span class="badge badge-success">
+                                 {{table.doc.partidas}}
+                              </span>
+                            </button>
+                          </td>
+              </tr>
+            </tbody>
+          </table>     
+        </div>
+      </div>
+    </div>
+  </div>-->
+
+  <!--MODAL RANKING TORNEO-->
+  <div class="modal fade" id="rankingTor" tabindex="-1" role="dialog" 
+        aria-labelledby="allMesas" aria-hidden="true">
+    <div class="modal-dialog modal-xl col-md-12">
+      <div class="modal-content row">
+        <div class="modal-header">
+          <h4 class="modal-title text-center col-md-11" id="exampleModalLabel">Ranking </h4> 
+            <svg width="2em" height="2em" data-dismiss="modal" aria-label="Close" viewBox="0 0 16 16" class="bi bi-x-square-fill col-md-1" fill="#FF0000" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm9.854 4.854a.5.5 0 0 0-.708-.708L8 7.293 4.854 4.146a.5.5 0 1 0-.708.708L7.293 8l-3.147 3.146a.5.5 0 0 0 .708.708L8 8.707l3.146 3.147a.5.5 0 0 0 .708-.708L8.707 8l3.147-3.146z"/>
+            </svg>
+        </div>
+          <table class="table modal-body">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">
+                  <svg width="1.7em" height="1.7em" viewBox="0 0 16 16" class="bi bi-award" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M9.669.864L8 0 6.331.864l-1.858.282-.842 1.68-1.337 1.32L2.6 6l-.306 1.854 1.337 1.32.842 1.68 1.858.282L8 12l1.669-.864 1.858-.282.842-1.68 1.337-1.32L13.4 6l.306-1.854-1.337-1.32-.842-1.68L9.669.864zm1.196 1.193l-1.51-.229L8 1.126l-1.355.702-1.51.229-.684 1.365-1.086 1.072L3.614 6l-.25 1.506 1.087 1.072.684 1.365 1.51.229L8 10.874l1.356-.702 1.509-.229.684-1.365 1.086-1.072L12.387 6l.248-1.506-1.086-1.072-.684-1.365z"/>
+                    <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"/>
+                  </svg>
+                </th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Dni</th>
+                <th scope="col">Pts a Favor </th>
+                <th scope="col">Pts en Contra</th>
+                <th scope="col">Efectividad</th>
+                <th scope="col">G/P</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let player of rankingTor | sortBy: true | paginate: { itemsPerPage: 7, currentPage: page }; let i = index">
+              <tr>
+                <th scope="row">{{ 7 * (page - 1) + i + 1 }}</th>
+                <td> {{player.nombre}} </td>
+                <td>{{player.dni}}</td>
+                <td>{{player.pts_favor}}</td>
+                <td>{{player.pts_contra}}</td>
+                <td>{{player.efectividad}}</td>
+                <td>{{player.gano}}/{{player.perdio}}</td>
+              </tr>
+            </tbody>
+          </table> 
+          <div class="modal-footer bg-dark">
+            <pagination-controls class="align-content-center" (pageChange)="page = $event"></pagination-controls>
+          </div>
+      </div>
+    </div>
+  </div>

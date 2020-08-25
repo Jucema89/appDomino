@@ -1,0 +1,133 @@
+<section class="allSection">
+    <div class="col-md-12">
+        <div class="row center">
+            <div class="form-card col-md-10 offset-1 shadow-lg">
+                <div class="col-md-12 text-center">
+                  <h3>Creación de Torneos</h3>
+                  <br>
+                </div>
+                <form class="form-row" [formGroup]="FormTorneoAdd" (ngSubmit)="addTournament(FormTorneoAdd.value, copiarDatos('nameCountry'), copiarDatos('nameState'),copiarDatos('nameCity')); eraseForm()">
+                    <div class="form-group col-md-6">
+                        <label for="name">Nombre del Torneo</label>
+                        <input type="text" (keyup)="toMayusculas($event.target)"  formControlName="nameTournament" class="form-control" required minlength="4" >
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label>Tipo de Torneo</label>
+                        <select formControlName="typeTournament" class="form-control">
+                           <option selected>Local</option>
+                           <option>Nacional</option>
+                           <option>Internacional</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="name">No de Participantes</label>
+                        <input id="players" type="number" formControlName="players" (change)="multiplo($event.target.value, 4)" class="form-control" required minlength="2">
+                        <div class="invalid-feedback">
+                          Ingresa un <strong>Multiplo de 4</strong>
+                        </div>
+                        <div id="numeroMesas">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label for="name">Sistema Rigido 
+                        <span id="sistema-inactivo" class="badge badge-secondary"> Inactivo </span>
+                         <span id="sistema-activo" class="badge badge-success d-none"> Activo </span>
+                      </label>
+                         <select id="metaJuego" formControlName="system" class="form-control" (change)="systemActive($event.target.value)" required>
+                           <option value= false >Inactivo </option>
+                           <option value= true >Activo </option> 
+                         </select>
+                         
+                   </div>
+                    <div class="form-group col-md-2">
+                      <label for="name">Fecha de Inicio</label>
+                      <input type="date"  formControlName="dateStart" class="form-control" required >
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label for="name">Fecha de Termino</label>
+                      <input type="date"  formControlName="dateEnd" class="form-control" required >
+                    </div>
+                    <div class="form-group col-md-2">
+                       <label for="name">Meta de Juego</label>
+                          <select id="metaJuego" formControlName="metaJuego" class="form-control" (change)="ViewMetaGame($event.target.value)">
+                            <option>Juegos</option>
+                            <option>Puntos</option> 
+                          </select>
+                    </div>
+                    <div class="form-group col-md-2 d-none" id="idMetaJuego">
+                      <label id="metaLabel" >Juegos a Ganar</label>
+                      <input type="number" formControlName="playsOrPoints" class="form-control">
+                    </div>
+                    <div class="form-group col-md-2" >
+                      <label for="modoGame">Modo de Juego</label>
+                      <select id="modoGame" formControlName="modoGame" class="form-control" (change)="ViewSingleOptions($event.target.value)" >
+                        <option selected>Parejas Dobles</option>
+                        <option>Pareja Fija</option>
+                        <option>Individual</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-2 d-none" id="SingleOptions">
+                      <label>Individual</label>
+                        <select formControlName="modoSingle" class="form-control">
+                          <option selected>Mixto</option>
+                          <option>Femenino</option>
+                          <option>Masculino</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-8">
+                      <div class="row">
+                        <div class="form-group col-md-4">
+                          <label class="control-label" for="country">País</label>
+                          <select *ngIf="getCountries()" formControlName="selectedCountry" (change)="onSelectCountry($event.target.value)" class="form-control input-lg">
+                          <option value="0">Select Country</option>
+                          <option *ngFor="let country of getCountries()" id="country"  value= {{country.id}}>{{country.name}}</option>
+                          </select>  
+                          </div>
+                        <div class="form-group col-md-4">
+                          <label class="control-label" for="States">Estado</label>
+                          <select id="state" *ngIf="states" formControlName="selectedState" (change)="onSelectState($event.target.value)" class="form-control input-lg">
+                          <option value="0">Select State</option>
+                          <option *ngFor="let state of states" id={{state.id}} value={{state.id}}>{{state.name}}</option>
+                          </select>
+                          </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label" for="City">Ciudad</label>
+                            <select id="city" class="form-control input-lg" formControlName="selectedCity" (change)="addAddress(FormTorneoAdd.value.selectedCountry, FormTorneoAdd.value.selectedState, FormTorneoAdd.value.selectedCity)" >
+                            <option *ngIf="!selectedState"  value="0">Select City</option>
+                            <option *ngFor="let city of cities" id={{city.id}} value={{city.name}} >{{city.name}}</option>
+                            </select>
+                          </div>
+                          <div class="col-md-12" >
+                            <div class="row">
+                              <div style="font-weight: 600; font-size: 18px;" class="col-md-4" formControlName="nameCountry" id="nameCountry">
+                              </div>
+                              <div style="font-weight: 600; font-size: 18px;" class="col-md-4"  formControlName="nameState" id="nameState">
+                              </div>
+                              <div style="font-weight: 600; font-size: 18px;" class="col-md-4" formControlName="nameCity" id="nameCity" >
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="name">Dirección</label>
+                        <textarea type="text" formControlName="address" class="form-control" required minlength="4" >
+                        </textarea>
+                    </div>
+                    
+                    <div class="form-group col-md-12">
+                      <div id="alertMultiplo" class="alert alert-danger d-none" ><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-exclamation-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                      </svg> El <strong>Numero de Participantes</strong> no completa las mesas</div>
+                      <button class="btn btn-success btn-lg" style="margin-right: 10px;" id="enviar" type="submit" 
+                      [disabled]="FormTorneoAdd.invalid"> Guardar</button>
+                      <button class="btn btn-danger btn-lg" type="reset" (click)="eraseForm()">
+                        Borrar
+                      </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+

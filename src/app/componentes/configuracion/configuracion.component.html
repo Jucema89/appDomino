@@ -1,0 +1,243 @@
+<section class="allSection" >
+    <div class="col-md-12" >
+      <div class="row card-deck">
+        <!--FORM REMOTE SERVER-->
+        <div class="col-md-4 card shadow-lg">
+          <div class="card-body">
+            <h5 class="card-title">
+              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-hdd-network" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M14 3H2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z"/>
+                <path d="M5 4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-2 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                <path fill-rule="evenodd" d="M7.5 10V7h1v3a1.5 1.5 0 0 1 1.5 1.5h5.5a.5.5 0 0 1 0 1H10A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5H.5a.5.5 0 0 1 0-1H6A1.5 1.5 0 0 1 7.5 10zm0 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"/>
+              </svg> Servidor Remoto 
+            </h5>
+            <p class="card-text">
+              Esta conexion es de la AppDomino a un Servidor CouchDB previamente desplegado y configurado, 
+              si no tiene un servidor con estas caracteristicas abstenerse de configurar esta sección.
+            </p>
+            <br>
+            <div id="inicialConfig" class="col-md-12 bg-light row pt-2 pb-2">
+              <button class="btn btn-success btn-lg" (click)="inicialConfig()">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cloud-arrow-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+                  <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z"/>
+                </svg> Habilitar Conexion</button>
+            </div>
+            <form id="formConfig" [formGroup]="FormConfig" (ngSubmit)="saveFormConfig(FormConfig.value)" class="input-group input-group-sm d-none" style="padding-top:15" >
+              <div class="form-group">  
+                <label for="exampleInputEmail1">
+                  <strong>IP Base de datos</strong>
+                </label>
+                <input formControlName="numberIp" class="form-control">
+                <small id="emailHelp" class="form-text text-muted">esta IP es del tipo 100.01.02.03</small>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1"><strong>Usuario Base de datos</strong></label>
+                <input type="user" formControlName="userIp" class="form-control">
+                <small id="emailHelp" class="form-text text-muted">Un nombre o linea con texto</small>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1"><strong>Clave de Servidor</strong></label>
+                <input type="password" formControlName="passIp" class="form-control">
+                <small id="emailHelp" class="form-text text-muted">Clave para conectar</small>
+              </div>
+              <button type="submit" class="btn btn-success" [disabled]="FormConfig.invalid">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cloud-arrow-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+                  <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z"/>
+                </svg> Conectar</button>
+            </form>
+            <!--Form Values -->
+            <form id="formConfigValues" class="input-group input-group-sm d-none" style="padding-top:15" >
+              <div class="form-group">  
+                <label for="exampleInputEmail1"><strong>IP Base de datos</strong></label>
+                <input value= {{configData.ip}} class="form-control-lg" readonly>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1"><strong>Usuario Base de datos</strong></label>
+                <input type="user" value= {{configData.user}} class="form-control-lg" readonly>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1"><strong>Clave de Servidor</strong></label>
+                <input value= {{configData.pass}} class="form-control-lg" readonly>
+              </div>
+              <div class="col-md-6">
+                <button type="submit" class="btn btn-secondary" (click)="viewConfigForm()"> 
+                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-node-plus-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M11 13a5 5 0 1 0-4.975-5.5H4A1.5 1.5 0 0 0 2.5 6h-1A1.5 1.5 0 0 0 0 7.5v1A1.5 1.5 0 0 0 1.5 10h1A1.5 1.5 0 0 0 4 8.5h2.025A5 5 0 0 0 11 13zm.5-7.5a.5.5 0 0 0-1 0v2h-2a.5.5 0 0 0 0 1h2v2a.5.5 0 0 0 1 0v-2h2a.5.5 0 0 0 0-1h-2v-2z"/>
+                  </svg> Cambiar Servidor</button>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-danger" [swal]="eliminarDatos" > 
+                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-node-minus-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M16 8a5 5 0 0 1-9.975.5H4A1.5 1.5 0 0 1 2.5 10h-1A1.5 1.5 0 0 1 0 8.5v-1A1.5 1.5 0 0 1 1.5 6h1A1.5 1.5 0 0 1 4 7.5h2.025A5 5 0 0 1 16 8zm-2 0a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5A.5.5 0 0 0 14 8z"/>
+                  </svg> Eliminar Conexión</button>
+                <swal
+                  #eliminarDatos
+                  title="Seguro quieres eliminar los datos"
+                  text="Perderas los datos de Conexión"
+                  icon="question"
+                  [showCancelButton]="true"
+                  [focusCancel]="true"
+                  (confirm)= "deleteConfig()"
+                  [swalOptions]="{ confirmButtonText: 'Si Eliminar', cancelButtonText:'Cancelar' }">
+                </swal>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!--FORM LISTADO DE BASES DE DATOS-->
+        <div class="col-md-4 card shadow-lg">
+            <div class="card-body">
+              <h5 class="card-title">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-diagram-3" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6h-1A1.5 1.5 0 0 1 6 4.5v-1zM7.5 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"/>
+                  <path fill-rule="evenodd" d="M8 5a.5.5 0 0 1 .5.5V7H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V5.5A.5.5 0 0 1 8 5z"/>
+                </svg> Bases de Datos</h5>
+              <p class="card-text">
+                Aquí puedes eliminar las bases de datos, si 
+                la conexion en servidor remoto esta activa, se 
+                eliminarán en ese servidor tambien.
+              </p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Jugadores 
+                <button class="btn btn-danger" (click)="borrarJugadores()"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                  </svg>
+                </button>
+              </li>
+              <li class="list-group-item">Torneos
+                <button class="btn btn-danger" (click)="borrarTorneos()"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                  </svg>
+                </button>
+              </li>
+              <li class="list-group-item">Parejas
+                <button class="btn btn-danger" (click)="borrarParejas()"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                  </svg>
+                </button>
+              </li>
+              <li class="list-group-item">Mesas en Juego
+                <button class="btn btn-danger" (click)="borrarMesas()"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                  </svg>
+                </button>
+              </li>
+            </ul>
+        </div>
+        <!--FORM SERVIDOR SMTP-->
+        <div class="col-md-4 card shadow-lg">
+          <div class="card-body">
+            <h5 class="card-title">
+              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-mailbox2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M12 3H4a4 4 0 0 0-4 4v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7a4 4 0 0 0-4-4zM8 7a3.99 3.99 0 0 0-1.354-3H12a3 3 0 0 1 3 3v6H8V7zm1 1.5h2.793l.853.854A.5.5 0 0 0 13 9.5h1a.5.5 0 0 0 .5-.5V8a.5.5 0 0 0-.5-.5H9v1zM4.585 7.157C4.836 7.264 5 7.334 5 7a1 1 0 0 0-2 0c0 .334.164.264.415.157C3.58 7.087 3.782 7 4 7c.218 0 .42.086.585.157z"/>
+              </svg> Servidor Mail
+            </h5>
+            <p class="card-text" >
+              Necesitas activar este servidor para poder generar notificaciones por correo a los jugadores.
+            </p>
+          </div>
+          <!--Loader-->
+          <div id="smtpLoader" class="card-body text-center">
+            <div class="spinner-border text-success
+            " role="status" style="width: 3rem; height: 3rem;">
+              <span class="sr-only">cargando ...</span>
+            </div>
+          </div>
+          <div class="card-body d-none" id="smtpEmpity">
+            <form [formGroup]="FormSmtp" (ngSubmit)="saveSmtp(FormSmtp.value)">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Servidor Mail Masivo</label>
+                <input type="text" formControlName="serverMasivo" class="form-control">
+                <small class="form-text text-muted">
+                  Ejemplo: https://servidormail.com/mails</small>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Servidor SMTP</label>
+                <input type="text" formControlName="smtpUrl" class="form-control">
+                <small class="form-text text-muted">
+                  Ejemplo: smtp-empresademails.com</small>
+              </div>
+              <div class="form-row">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label>Usuario</label>
+                    <input type="text" formControlName="smtpUser" class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Puerto</label>
+                    <input type="number" formControlName="smtpPort" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input type="password" formControlName="smtpPass" class="form-control">
+              </div>
+              <button type="submit" [disabled]="!FormSmtp.valid" class="btn btn-success">Registrar</button>
+            </form>
+          </div>
+          <!--SMTP blocked-->
+          <div class="card-body d-none" id="smtpClosed">
+            <form>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Servidor Mail Masivo</label>
+                <input type="text" value= {{allSmtp.serverMasivo}} class="form-control" readonly>
+                <small class="form-text text-muted">
+                  Ejemplo: https://servidormail.com/mails
+                </small>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Servidor SMTP</label>
+                <input value= {{allSmtp.smtpUrl}} type="text" class="form-control" readonly>
+                <small class="form-text text-muted">
+                  Ejemplo: smtp-empresademails.com</small>
+              </div>
+              <div class="form-row">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Usuario</label>
+                    <input value= {{allSmtp.smtpUser}} type="text" class="form-control" readonly>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="puerto">Puerto</label>
+                    <input value= {{allSmtp.smtpPort}} type="number" class="form-control" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input value= {{allSmtp.smtpPass}} type="password" class="form-control" readonly>
+              </div>
+              <button class="btn btn-danger" [swal]="eliminarSMTP" >
+                Borarr Conexión
+              </button>
+            </form>
+                <swal
+                  #eliminarSMTP
+                  title="Seguro quieres eliminar el SMTP"
+                  text="Perderas los datos de Conexión"
+                  icon="question"
+                  [showCancelButton]="true"
+                  [focusCancel]="true"
+                  (confirm)= "deleteSmtp();"
+                  [swalOptions]="{ confirmButtonText: 'Si Eliminar', cancelButtonText:'Cancelar' }">
+                </swal>
+          </div>
+          <small class="mt-3 p-2"> 
+            Crea una cuenta gratuita en Sendinblue y obten SMTP con envio de 300 mails gratis/dia. <a href="" class="btn btn-link"> 
+              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-envelope-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+              </svg> 
+              Crear Cuenta</a>
+          </small>
+        </div>
+      </div>
+    </div>
+</section>

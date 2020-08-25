@@ -1,0 +1,206 @@
+<section class="allSection" id="listar-jugadores" >
+  <div class="col-md-12" >
+    <table class="table table-hover">
+      <thead class="thead-dark" >
+        <tr>
+          <th>CC / DNI</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Celular</th>
+          <th>Email</th>
+          <th>Estado</th>
+          <th>Ciudad</th>
+          <th>Equipo</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let player of allPlayers">
+          <td>{{ player.DNI }}</td>
+          <td>{{ player.nombre }}</td>
+          <td>{{ player.apellido }}</td>
+          <td>{{ player.celular }}</td>
+          <td>{{ player.mail }}</td>
+          <td>{{ player.estado }}</td>
+          <td>{{ player.ciudad }}</td>
+          <td>{{ player.teamName }}</td>
+          <td>
+            <button class="btn btn-info" data-toggle="modal" data-target="#editaJugador" (click)="playerShow(player._id)" ><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M5.707 13.707a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391L10.086 2.5a2 2 0 0 1 2.828 0l.586.586a2 2 0 0 1 0 2.828l-7.793 7.793zM3 11l7.793-7.793a1 1 0 0 1 1.414 0l.586.586a1 1 0 0 1 0 1.414L5 13l-3 1 1-3z"/>
+              <path fill-rule="evenodd" d="M9.854 2.56a.5.5 0 0 0-.708 0L5.854 5.855a.5.5 0 0 1-.708-.708L8.44 1.854a1.5 1.5 0 0 1 2.122 0l.293.292a.5.5 0 0 1-.707.708l-.293-.293z"/>
+              <path d="M13.293 1.207a1 1 0 0 1 1.414 0l.03.03a1 1 0 0 1 .03 1.383L13.5 4 12 2.5l1.293-1.293z"/>
+            </svg></button>
+          </td>
+        <td>
+          <swal
+          #deleteSwal
+          title="Seguro eliminaras a {{ player.nombre }}?"
+          text="Esto no podra deshacerse"
+          icon="question"
+          [showCancelButton]="true"
+          [focusCancel]="true"
+          (confirm)="deleteOne(player._id)"
+          [swalOptions]="{ confirmButtonText: 'Si Borrar', cancelButtonText:'Cancelar' }">
+        </swal>
+          <button class="btn btn-danger" [swal]="deleteSwal"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+          </svg></button>
+          </td>
+          
+        </tr>
+      </tbody>
+    </table>
+
+<!-- Modal -->
+<div class="modal fade" id="editaJugador" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div *ngFor="let player of searchPlayers" class="modal-header row">
+        <div class="col-md-8">
+          <h4><span class="badge badge-success"></span> Formulario de Modificación individual</h4><br>
+          <span class="text-muted" id="IDBD" >{{ player._id }} </span>
+        </div>
+        <div class="col-md-4" >
+          <button type="button" class="btn btn-lg btn-success">
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-badge-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm4.5 0a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5 2.755C12.146 12.825 10.623 12 8 12s-4.146.826-5 1.755V14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-.245z"/>
+            </svg> {{ player.nombre }} <span class="badge badge-light"> DNI: {{ player.DNI }} </span>
+          </button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span class="badge badge-danger" aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="UpdateJugador">
+          <div class="row">
+            <div class="col-md-6">
+              <table *ngFor="let player of searchPlayers" class="table table-striped">
+                <tr>
+                  <th>DATO</th>
+                  <th>VALOR ACTUAL</th>
+                  <th>NUEVO VALOR</th>
+                </tr>
+                <tr>
+                  <th>CC / DNI</th>
+                  <td >{{ player.DNI }}</td>
+                  <td> <input formControlName="cc" class="form-control input-lg" /> </td>
+                </tr>
+                <tr>
+                  <th>Apellido</th>
+                  <td>{{ player.apellido }}</td>
+                  <td><input formControlName="lastName" id="newApellido" class="form-control input-lg" /> </td>
+                </tr>
+                <tr>
+                  <th>Email</th>
+                  <td>{{ player.mail }}</td>
+                  <td> <input formControlName="mail" class="form-control input-lg" /></td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-md-6">
+              <table *ngFor="let player of searchPlayers" class="table table-striped">
+                <tr>
+                  <th>DATO</th>
+                  <th>VALOR ACTUAL</th>
+                  <th>NUEVO VALOR</th>
+                </tr>
+                <tr>
+                  <th>Nombre</th>
+                  <td>{{ player.nombre }}</td>
+                  <td> <input formControlName="name" class="form-control input-lg" /> </td>
+                </tr>
+                <tr>
+                  <th>Celular</th>
+                  <td>{{ player.celular }}</td>
+                  <td> <input formControlName="phone" class="form-control input-lg" /> </td>
+                </tr>
+                <tr>
+                  <th>Dirección</th>
+                  <td>{{ player.direccion }}</td>
+                  <td> <textarea formControlName="address" class="form-control input-lg"></textarea></td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-md-12 container" >
+                <table *ngFor="let player of searchPlayers" class="table table-striped">
+                  <div class="row">
+                    <div class="col-md-4" >
+                      <tr>
+                        <th>Pais</th>
+                        <td>{{ player.pais }}</td>
+                        <td> 
+                          <select *ngIf="getCountries()" formControlName="selectedCountry" (change)="onSelectCountry($event.target.value)" class="form-control input-lg">
+                          <option value="0">Select Country</option>
+                          <option *ngFor="let country of getCountries()" id="country"  value= {{country.id}}>{{country.name}}</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </div>
+                    <div class="col-md-4" >
+                      <tr>
+                        <th>Estado</th>
+                        <td>{{ player.estado }}</td>
+                        <td> 
+                          <select id="state" *ngIf="states" formControlName="selectedState" (change)="onSelectState($event.target.value)" class="form-control input-lg">
+                            <option value="0">Select State</option>
+                            <option *ngFor="let state of states" id={{state.name}} value={{state.id}}>{{state.name}}</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </div>
+                    <div class="col-md-4" >
+                      <tr>
+                        <th>Ciudad</th>
+                        <td>{{ player.ciudad }}</td>
+                        <td> 
+                          <select id="city" class="form-control input-lg" formControlName="selectedCity">
+                            <option *ngIf="!selectedState"  value="0">Select City</option>
+                            <option *ngFor="let city of cities" id={{city.name}} value={{city.name}} >{{city.name}}</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </div>
+                  </div>
+              </table>
+            </div>
+            <div class="col-md-12" >
+              <div class="row">
+                <div class="col-md-3">
+                  <a class="btn btn-outline-success" data-toggle="collapse" href="#collapseValidate" role="button" aria-expanded="false" aria-controls="collapseValidate" (click)="addAddress(UpdateJugador.value.selectedCountry, UpdateJugador.value.selectedState, UpdateJugador.value.selectedCity)">Validar</a>
+                </div>
+                <div style="font-weight: 600; font-size: 18px;" class="col-md-3" formControlName="nameCountry" id="nameCountry">
+                </div>
+                <div style="font-weight: 600; font-size: 18px;" class="col-md-3"  formControlName="nameState" id="nameState">
+                </div>
+                <div style="font-weight: 600; font-size: 18px;" class="col-md-3" formControlName="nameCity" id="nameCity" >
+                </div>
+              </div>
+            </div> 
+          </div>
+        </form>
+      </div>
+      <div *ngFor="let player of searchPlayers" class="modal-footer collapse" id="collapseValidate">
+        <swal
+        #actualizarSwal
+        title="Seguro quieres actualizar este Jugador?"
+        text="Perderas los datos antiguos"
+        icon="question"
+        [showCancelButton]="true"
+        [focusCancel]="true"
+        (confirm)= "add(player._id, UpdateJugador.value, copiarDatos('nameCountry'), copiarDatos('nameState'), copiarDatos('nameCity')); eraseForm()"
+        [swalOptions]="{ confirmButtonText: 'Si Actualizar', cancelButtonText:'Cancelar' }">
+      </swal>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success" [swal]="actualizarSwal" >Actualizar Datos</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+</div>
+
+
+</section>

@@ -1,0 +1,620 @@
+<section [class.isPrinting]="printService.isPrinting">
+  <div id="validateMesa">
+    <form [formGroup]="FormMesa" id="Mesa{{numberTable}}" (ngSubmit)="validateMesa(FormMesa.value, 'Mesa' + numberTable, numberTable)">
+      <div class="mesa">
+        <table class="shadow-lg table">
+          <thead>
+              <th class="bg-success" id="Nmesa" style="color:white"> 
+                Mesa {{numberTable}}
+              </th>
+              <td>Parejas de Jugadores</td>
+          </thead>
+          <tbody>
+            <tr>  
+              <th scope="row">Pareja 1</th>
+              <td>
+                <div class="input-group row"><!--P11-->
+                  <div class="input-group-prepend">
+                    <div class="input-group-text badge-info"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    </svg></div>
+                  </div>
+                    <select formControlName="P11" id="selectP11" class="form-control" (click)="listarPlayersRondas()" (change)="searchDuoOne($event.target.value)" required>
+                      <option disabled value="">Jugador 1.1</option>
+                      <option *ngFor="let player of playersintoRonda" value = {{player.DNI}} >{{player.nombre}} || {{player.DNI}}</option>
+                    </select>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <div class="input-group row"><!--P12-->
+                  <div class="input-group-prepend">
+                    <div class="input-group-text badge-info"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    </svg></div>
+                  </div>
+                    <select id="selectP12" class="form-control" formControlName="P12" required *ngIf="select1erPar">
+                      <option disabled  >Jugador 1.2</option>
+                      <option value= {{select1erPar.DNI}}>{{select1erPar.nombre}} || {{select1erPar.DNI}}</option>
+                    </select>
+                </div>
+              </td>
+            </tr>
+            <tr>  
+              <th scope="row">Pareja 2</th>
+                <td>
+                  <div class="input-group row"><!--P21-->
+                    <div class="input-group-prepend">
+                      <div class="input-group-text badge-success"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                      </svg></div>
+                    </div>
+                      <select id="selectP21" class="form-control" formControlName="P21" (change)="searchDuoTwo($event.target.value)" required>
+                        <option disabled value="">Jugador 2.1</option>
+                        <option *ngFor="let player of playersintoRonda" value = {{player.DNI}}>{{player.nombre}} || {{player.DNI}}</option>
+                      </select>
+                  </div>
+                </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <div class="input-group row"><!--P22-->
+                  <div class="input-group-prepend">
+                    <div class="input-group-text badge-success"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    </svg></div>
+                  </div>
+                    <select id="selectP22" class="form-control" formControlName="P22" *ngIf="select2doPar" (change)="Value2doDuo($event.target.value)" required>
+                      <option disabled value="">Jugador 2.2</option>
+                      <option value= {{select2doPar.DNI}} >{{select2doPar.nombre}} || {{select2doPar.DNI}}</option>
+                    </select>
+                </div>
+              </td>
+            </tr>
+            <tr class="table-success">  
+              <th scope="row">Juez</th>
+              <td>
+                <div class="input-group row">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text badge-dark"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-shield-shaded" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" d="M5.443 1.991a60.17 60.17 0 0 0-2.725.802.454.454 0 0 0-.315.366C1.87 7.056 3.1 9.9 4.567 11.773c.736.94 1.533 1.636 2.197 2.093.333.228.626.394.857.5.116.053.21.089.282.11A.73.73 0 0 0 8 14.5c.007-.001.038-.005.097-.023.072-.022.166-.058.282-.111.23-.106.525-.272.857-.5a10.197 10.197 0 0 0 2.197-2.093C12.9 9.9 14.13 7.056 13.597 3.159a.454.454 0 0 0-.315-.366c-.626-.2-1.682-.526-2.725-.802C9.491 1.71 8.51 1.5 8 1.5c-.51 0-1.49.21-2.557.491zm-.256-.966C6.23.749 7.337.5 8 .5c.662 0 1.77.249 2.813.525a61.09 61.09 0 0 1 2.772.815c.528.168.926.623 1.003 1.184.573 4.197-.756 7.307-2.367 9.365a11.191 11.191 0 0 1-2.418 2.3 6.942 6.942 0 0 1-1.007.586c-.27.124-.558.225-.796.225s-.526-.101-.796-.225a6.908 6.908 0 0 1-1.007-.586 11.192 11.192 0 0 1-2.417-2.3C2.167 10.331.839 7.221 1.412 3.024A1.454 1.454 0 0 1 2.415 1.84a61.11 61.11 0 0 1 2.772-.815z"/>
+                      <path d="M8 2.25c.909 0 3.188.685 4.254 1.022a.94.94 0 0 1 .656.773c.814 6.424-4.13 9.452-4.91 9.452V2.25z"/>
+                    </svg></div>
+                  </div>
+                    <select id="select-juez" class="form-control" formControlName="juez" required>
+                      <option disabled value="">Escoge Juez</option>
+                      <option *ngFor="let juez of allJueces" value = {{juez._id}}>{{juez.nombre}} || {{juez.DNI}}</option>
+                    </select>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <th></th>
+              <td>
+                  <!--<button [disabled]="FormMesa.invalid" style="margin-left: 10px;" class="btn btn-success btn-lg" type="submit">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    </svg> Crear Mesa
+                  </button>-->
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-dark" (click)="mesaAleatoria(numberTable)">
+                      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-shuffle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M12.646 1.146a.5.5 0 0 1 .708 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 0 1-.708-.708L14.793 4l-2.147-2.146a.5.5 0 0 1 0-.708zm0 8a.5.5 0 0 1 .708 0l2.5 2.5a.5.5 0 0 1 0 .708l-2.5 2.5a.5.5 0 0 1-.708-.708L14.793 12l-2.147-2.146a.5.5 0 0 1 0-.708z"/>
+                        <path fill-rule="evenodd" d="M0 4a.5.5 0 0 1 .5-.5h2c3.053 0 4.564 2.258 5.856 4.226l.08.123c.636.97 1.224 1.865 1.932 2.539.718.682 1.538 1.112 2.632 1.112h2a.5.5 0 0 1 0 1h-2c-1.406 0-2.461-.57-3.321-1.388-.795-.755-1.441-1.742-2.055-2.679l-.105-.159C6.186 6.242 4.947 4.5 2.5 4.5h-2A.5.5 0 0 1 0 4z"/>
+                        <path fill-rule="evenodd" d="M0 12a.5.5 0 0 0 .5.5h2c3.053 0 4.564-2.258 5.856-4.226l.08-.123c.636-.97 1.224-1.865 1.932-2.539C11.086 4.93 11.906 4.5 13 4.5h2a.5.5 0 0 0 0-1h-2c-1.406 0-2.461.57-3.321 1.388-.795.755-1.441 1.742-2.055 2.679l-.105.159C6.186 9.758 4.947 11.5 2.5 11.5h-2a.5.5 0 0 0-.5.5z"/>
+                      </svg>
+                      Aleatoria</button>
+                    <button type="button" class="btn btn-success" type="submit" [disabled]="FormMesa.invalid">
+                      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                        </svg>
+                      Crear Mesa</button>
+                  </div>
+              </td>
+          </tfoot>
+        </table>
+      </div>
+    </form>
+    <!--Mesa activa-->
+    <form [formGroup]="FormMesaActive" class="d-none shadow-lg" id="MesaActive{{numberTable}}" style="margin-top:10px; margin-bottom: 5px;">
+      <div class="mesa">
+        <div class="accordion" id="accordionExample"> 
+          <div class="card">
+            <!--CABECERA DE LA MESA-->
+            <div class="card-header navbar bg-dark row">
+              <div class="col-md-8">
+                <h3>
+                  <span class="badge badge-success" >  
+                    Mesa {{numberTable}}
+                  </span>
+                </h3>
+              </div>
+              <div class="col-md-4">
+                <div class="row">
+                  <div class="col-md-6"><!--IMPRIMIR CEDULA DE MESA-->
+                    <button class="btn btn-outline-light" (click)="onPrintInvoice(numberTable)">
+                      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-printer" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11 2H5a1 1 0 0 0-1 1v2H3V3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2h-1V3a1 1 0 0 0-1-1zm3 4H2a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h1v1H2a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1z"/>
+                        <path fill-rule="evenodd" d="M11 9H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zM5 8a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H5z"/>
+                        <path d="M3 7.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="col-md-6" ><!--BORRAR MESA-->
+                    <button class="btn btn-outline-danger" [swal]="deleteSwal">
+                      <swal
+                        #deleteSwal
+                        title="Borraras los datos de Mesa {{numberTable}}?"
+                        text="Eliminarás los datos, la mesa seguira aquí"
+                        icon="question"
+                        [showCancelButton]="true"
+                        [focusCancel]="true"
+                        (confirm)="deleteMesa(numberTable)"
+                        [swalOptions]="{ confirmButtonText: 'Si Borrar', cancelButtonText:'Cancelar' }">
+                      </swal>
+                      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            <!--CABECERA DE LA MESA END-->
+            <div class="card-header"><!--PLAYER 11 HEADER-->
+              <div class="row" >
+                <div class="col-md-3 btn-block text-left">
+                  <svg width="3.2em" height="3.2em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+                  <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                  <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+                  </svg> 
+                </div>
+              <div class="col-md-6">
+                <p style="font-size:16px"><strong [id]="'p11Nombre' + numberTable">Nombre y Apellido</strong><br>
+                  <span class="badge badge-info" style="margin-right: 5px;">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                    </svg>
+                  </span><span class="badge badge-warning" [id]="'p11Dni' + numberTable" >DNI: 12346695545 </span></p>
+                  
+              </div>
+              <div class="col-md-2"><!--Boton para desplegar-->
+                <button class="btn btn-outline-dark" style="margin-right: 10px;" type="button" data-toggle="collapse" [attr.data-target]="'#p11' + numberTable"
+                  aria-expanded="true" aria-controls="collapseOne">
+                  <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-arrow-down-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M11 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                    <path fill-rule="evenodd" d="M10.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L11 3.707 8.354 6.354a.5.5 0 1 1-.708-.708l3-3zm-9 7a.5.5 0 0 1 .708 0L5 12.293l2.646-2.647a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
+                    <path fill-rule="evenodd" d="M5 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/>
+                  </svg>
+                </button>
+              </div>
+                
+              </div>
+            </div>
+            <!--CONTENIDO FORM DE PLAYER 11-->
+            <div [id]="'p11' + numberTable" class="collapse" data-parent="#accordionExample">
+              <div class="card-body">
+                <div class=" form-row">
+                    <div class="form-group col-md-6"><!--PTS A FAVOR-->
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text badge-primary">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4a.5.5 0 0 0-1 0v3.5H4a.5.5 0 0 0 0 1h3.5V12a.5.5 0 0 0 1 0V8.5H12a.5.5 0 0 0 0-1H8.5V4z"/>
+                            </svg>
+                          </span>
+                        </div>
+                        <input formControlName="P11_ptsFavor" type="text" class="form-control">
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6"><!--PtS EN CONTRA-->
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text badge-danger">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-dash-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4 7.5a.5.5 0 0 0 0 1h8a.5.5 0 0 0 0-1H4z"/>
+                            </svg>
+                          </span>
+                        </div>
+                        <input formControlName="P11_ptsContra" type="text" class="form-control" id="">
+                      </div>
+                    </div>
+                  <div class="form-group col-md-6"> <!--GANO O PERDIO-->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+                          </svg>
+                        </span>
+                      </div>
+                      <select formControlName="P11_win" class="form-control">
+                        <option>
+                          Gano
+                        </option>
+                        <option>
+                          Perdio
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6"> <!--OBSERVACIONES-->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-earmark-medical" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>
+                            <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z"/>
+                            <path fill-rule="evenodd" d="M7 4a.5.5 0 0 1 .5.5v.634l.549-.317a.5.5 0 1 1 .5.866L8 6l.549.317a.5.5 0 1 1-.5.866L7.5 6.866V7.5a.5.5 0 0 1-1 0v-.634l-.549.317a.5.5 0 1 1-.5-.866L6 6l-.549-.317a.5.5 0 0 1 .5-.866l.549.317V4.5A.5.5 0 0 1 7 4zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                          </svg>
+                        </span>
+                      </div>
+                      <textarea formControlName="P11_obs" class="form-control" placeholder="Observaciones"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--CONTENIDO END FORM DE PLAYER 11-->
+            
+            <div class="card-header"><!--PLAYER 12 HEADER-->
+              <div class="row" >
+                <div class="col-md-3 btn-block text-left">
+                  <svg width="3.2em" height="3.2em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+                  <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                  <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+                  </svg> 
+                </div>
+              <div class="col-md-6">
+                <p style="font-size:16px"><strong [id]="'p12Nombre' + numberTable">Nombre y Apellido</strong><br>
+                  <span class="badge badge-info" style="margin-right: 5px;">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                    </svg>
+                  </span><span class="badge badge-warning" [id]="'p12Dni' + numberTable" >DNI: 12346695545 </span></p>
+                  
+              </div>
+              <div class="col-md-2"><!--Boton para desplegar-->
+                <button class="btn btn-outline-dark" style="margin-right: 10px;" type="button" data-toggle="collapse" [attr.data-target]="'#p12' + numberTable"
+                  aria-expanded="true" aria-controls="collapseOne">
+                  <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-arrow-down-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M11 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                    <path fill-rule="evenodd" d="M10.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L11 3.707 8.354 6.354a.5.5 0 1 1-.708-.708l3-3zm-9 7a.5.5 0 0 1 .708 0L5 12.293l2.646-2.647a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
+                    <path fill-rule="evenodd" d="M5 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/>
+                  </svg>
+                </button>
+              </div>
+                
+              </div>
+            </div>
+            <!--CONTENIDO FORM DE PLAYER 12-->
+            <div [id]="'p12' + numberTable" class="collapse" data-parent="#accordionExample">
+              <div class="card-body">
+                <div class=" form-row">
+                    <div class="form-group col-md-6"><!--PTS A FAVOR-->
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text badge-primary">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4a.5.5 0 0 0-1 0v3.5H4a.5.5 0 0 0 0 1h3.5V12a.5.5 0 0 0 1 0V8.5H12a.5.5 0 0 0 0-1H8.5V4z"/>
+                            </svg>
+                          </span>
+                        </div>
+                        <input formControlName="P12_ptsFavor" type="text" class="form-control">
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6"><!--PtS EN CONTRA-->
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text badge-danger">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-dash-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4 7.5a.5.5 0 0 0 0 1h8a.5.5 0 0 0 0-1H4z"/>
+                            </svg>
+                          </span>
+                        </div>
+                        <input formControlName="P12_ptsContra" type="text" class="form-control" id="">
+                      </div>
+                    </div>
+                  <div class="form-group col-md-6"> <!--GANO O PERDIO-->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+                          </svg>
+                        </span>
+                      </div>
+                      <select formControlName="P12_win" class="form-control">
+                        <option>
+                          Gano
+                        </option>
+                        <option>
+                          Perdio
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6"> <!--OBSERVACIONES-->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-earmark-medical" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>
+                            <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z"/>
+                            <path fill-rule="evenodd" d="M7 4a.5.5 0 0 1 .5.5v.634l.549-.317a.5.5 0 1 1 .5.866L8 6l.549.317a.5.5 0 1 1-.5.866L7.5 6.866V7.5a.5.5 0 0 1-1 0v-.634l-.549.317a.5.5 0 1 1-.5-.866L6 6l-.549-.317a.5.5 0 0 1 .5-.866l.549.317V4.5A.5.5 0 0 1 7 4zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                          </svg>
+                        </span>
+                      </div>
+                      <textarea formControlName="P12_obs" class="form-control" placeholder="Observaciones"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--CONTENIDO END FORM DE PLAYER 12-->
+  
+            <div class="card-header"><!--PLAYER 21 HEADER-->
+              <div class="row" >
+                <div class="col-md-3 btn-block text-left">
+                  <svg width="3.2em" height="3.2em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+                  <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                  <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+                  </svg> 
+                </div>
+              <div class="col-md-6">
+                <p style="font-size:16px"><strong [id]="'p21Nombre' + numberTable">Nombre y Apellido</strong><br>
+                  <span class="badge badge-success" style="margin-right: 5px;">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                    </svg>
+                  </span><span class="badge badge-warning" [id]="'p21Dni' + numberTable" >DNI: 12346695545 </span></p>
+                  
+              </div>
+              <div class="col-md-2"><!--Boton para desplegar-->
+                <button class="btn btn-outline-dark" style="margin-right: 10px;" type="button" data-toggle="collapse" [attr.data-target]="'#p21' + numberTable"
+                  aria-expanded="true" aria-controls="collapseOne">
+                  <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-arrow-down-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M11 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                    <path fill-rule="evenodd" d="M10.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L11 3.707 8.354 6.354a.5.5 0 1 1-.708-.708l3-3zm-9 7a.5.5 0 0 1 .708 0L5 12.293l2.646-2.647a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
+                    <path fill-rule="evenodd" d="M5 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/>
+                  </svg>
+                </button>
+              </div>
+                
+              </div>
+            </div>
+            <!--CONTENIDO FORM DE PLAYER 21-->
+            <div [id]="'p21' + numberTable" class="collapse" data-parent="#accordionExample">
+              <div class="card-body">
+                <div class=" form-row">
+                    <div class="form-group col-md-6"><!--PTS A FAVOR-->
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text badge-primary">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4a.5.5 0 0 0-1 0v3.5H4a.5.5 0 0 0 0 1h3.5V12a.5.5 0 0 0 1 0V8.5H12a.5.5 0 0 0 0-1H8.5V4z"/>
+                            </svg>
+                          </span>
+                        </div>
+                        <input formControlName="P21_ptsFavor" type="text" class="form-control">
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6"><!--PtS EN CONTRA-->
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text badge-danger">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-dash-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4 7.5a.5.5 0 0 0 0 1h8a.5.5 0 0 0 0-1H4z"/>
+                            </svg>
+                          </span>
+                        </div>
+                        <input formControlName="P21_ptsContra" type="text" class="form-control" id="">
+                      </div>
+                    </div>
+                  <div class="form-group col-md-6"> <!--GANO O PERDIO-->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+                          </svg>
+                        </span>
+                      </div>
+                      <select formControlName="P21_win" class="form-control">
+                        <option>
+                          Gano
+                        </option>
+                        <option>
+                          Perdio
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6"> <!--OBSERVACIONES-->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-earmark-medical" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>
+                            <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z"/>
+                            <path fill-rule="evenodd" d="M7 4a.5.5 0 0 1 .5.5v.634l.549-.317a.5.5 0 1 1 .5.866L8 6l.549.317a.5.5 0 1 1-.5.866L7.5 6.866V7.5a.5.5 0 0 1-1 0v-.634l-.549.317a.5.5 0 1 1-.5-.866L6 6l-.549-.317a.5.5 0 0 1 .5-.866l.549.317V4.5A.5.5 0 0 1 7 4zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                          </svg>
+                        </span>
+                      </div>
+                      <textarea formControlName="P21_obs" class="form-control" placeholder="Observaciones"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--CONTENIDO END FORM DE PLAYER 21-->
+  
+            <div class="card-header"><!--PLAYER 22 HEADER-->
+              <div class="row" >
+                <div class="col-md-3 btn-block text-left">
+                  <svg width="3.2em" height="3.2em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+                  <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                  <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+                  </svg> 
+                </div>
+              <div class="col-md-6">
+                <p style="font-size:16px"><strong [id]="'p22Nombre' + numberTable">Nombre y Apellido</strong><br>
+                  <span class="badge badge-success" style="margin-right: 5px;">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                    </svg>
+                  </span><span class="badge badge-warning" [id]="'p22Dni' + numberTable" >DNI: 12346695545 </span></p>
+                  
+              </div>
+              <div class="col-md-2"><!--Boton para desplegar-->
+                <button class="btn btn-outline-dark" style="margin-right: 10px;" type="button" data-toggle="collapse" [attr.data-target]="'#p22' + numberTable"
+                  aria-expanded="true" aria-controls="collapseOne">
+                  <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-arrow-down-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M11 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                    <path fill-rule="evenodd" d="M10.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L11 3.707 8.354 6.354a.5.5 0 1 1-.708-.708l3-3zm-9 7a.5.5 0 0 1 .708 0L5 12.293l2.646-2.647a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
+                    <path fill-rule="evenodd" d="M5 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/>
+                  </svg>
+                </button>
+              </div>
+                
+              </div>
+            </div>
+            <!--CONTENIDO FORM DE PLAYER 22-->
+            <div [id]="'p22' + numberTable" class="collapse" data-parent="#accordionExample">
+              <div class="card-body">
+                <div class=" form-row">
+                    <div class="form-group col-md-6"><!--PTS A FAVOR-->
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text badge-primary">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4a.5.5 0 0 0-1 0v3.5H4a.5.5 0 0 0 0 1h3.5V12a.5.5 0 0 0 1 0V8.5H12a.5.5 0 0 0 0-1H8.5V4z"/>
+                            </svg>
+                          </span>
+                        </div>
+                        <input formControlName="P22_ptsFavor" type="text" class="form-control">
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6"><!--PtS EN CONTRA-->
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text badge-danger">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-dash-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4 7.5a.5.5 0 0 0 0 1h8a.5.5 0 0 0 0-1H4z"/>
+                            </svg>
+                          </span>
+                        </div>
+                        <input formControlName="P22_ptsContra" type="text" class="form-control" id="">
+                      </div>
+                    </div>
+                  <div class="form-group col-md-6"> <!--GANO O PERDIO-->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+                          </svg>
+                        </span>
+                      </div>
+                      <select formControlName="P22_win" class="form-control">
+                        <option>
+                          Gano
+                        </option>
+                        <option>
+                          Perdio
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6"> <!--OBSERVACIONES-->
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-earmark-medical" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>
+                            <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z"/>
+                            <path fill-rule="evenodd" d="M7 4a.5.5 0 0 1 .5.5v.634l.549-.317a.5.5 0 1 1 .5.866L8 6l.549.317a.5.5 0 1 1-.5.866L7.5 6.866V7.5a.5.5 0 0 1-1 0v-.634l-.549.317a.5.5 0 1 1-.5-.866L6 6l-.549-.317a.5.5 0 0 1 .5-.866l.549.317V4.5A.5.5 0 0 1 7 4zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                          </svg>
+                        </span>
+                      </div>
+                      <textarea formControlName="P22_obs" class="form-control" placeholder="Observaciones"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--CONTENIDO END FORM DE PLAYER 21-->
+            <div class="card-footer row alert-success" >
+              <div class="col-md-3" >
+                <small>No Partidas</small><br>
+                <select class="form-control" formControlName="nPartidas">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+              <div class="col-md-5" id="JuezControl" >  
+                <small><b>Registrado por:</b></small>
+                <p style="font-size: 18px"><i [id]="'juezNombre' + numberTable">Nombre Juez</i><br>
+                <span class="badge badge-dark" [id]="'juezDni' + numberTable">DNI: 123456987 </span></p>
+              </div>
+              <div class="col-md-4">
+                <swal
+                #cerrarMesa
+                title="Cerraras la Mesa {{numberTable}}?"
+                text="los datos se guardan, no los podras editar."
+                icon="question"
+                [showCancelButton]="true"
+                [focusCancel]="true"
+                (confirm)="sendMesaActive(FormMesaActive.value, 'Mesa' + numberTable, numberTable)"
+                [swalOptions]="{ confirmButtonText: 'Guardar', cancelButtonText:'Cancelar' }">
+              </swal>
+                <button class="btn btn-success btn -lg" [disabled]="FormMesaActive.invalid" [swal]="cerrarMesa">
+                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-clipboard-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                    <path fill-rule="evenodd" d="M9.5 1h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3zm4.354 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                  </svg>
+                  Registrar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div id="MesaCerrada{{numberTable}}" class="card bg-success text-white text-center p-5 d-none m-3 shadow-lg">
+      <blockquote class="blockquote mb-0">
+        <div class="p-5">
+          <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-clipboard-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+            <path fill-rule="evenodd" d="M9.5 1h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3zm4.354 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+          </svg>
+        </div>
+        <p>Esta <b> MESA {{numberTable}}</b> esta cerrada, registralas todas y pasa a la siguiente ronda</p>
+        <footer class="blockquote-footer text-white">
+          <small class="p-2">
+            Juez: <cite title="Source Title" id="juez{{numberTable}}"></cite>
+          </small>
+        </footer>
+      </blockquote>
+    </div>
+  </div>
+</section>
+<app-nav-float [idTor]="this.idTorneo"></app-nav-float>
+
