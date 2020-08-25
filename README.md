@@ -25,3 +25,63 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+##PROCESO DE SUBIR A GIT
+
+echo "# AppDomino" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/Jucema89/AppDomino.git
+git push -u origin master
+
+
+##DIAGRAMA DE BASES DE DATOS
+
+PLAYERS / BD
+
+    DATOS   Nombre
+            Apellidos
+            DNI
+            Mail
+            Celular
+            Direccion
+            Pais
+            Estado
+            Ciudad
+
+    LOGIN   User
+            Password
+            Correo
+
+    EQUIPO  
+            ID-equipo
+            Nombre-Equipo
+
+    CLUB    
+            IdClub
+            Nombre_club
+
+    PAREJA
+            IdPareja
+
+    RANKING
+            Posicion
+            puntos
+    
+    TORNEOS : [
+            IdTorneo
+            Nombre_Torneo
+            Posicion_en_Torneo
+            Puntos_de_Ranking:
+            PARTIDOS : [
+                        Partida-1 [
+                                Mesa
+                                Pareja
+                                Juez
+                                Puntos
+                        ]
+                    ]
+            ]
+    
+# appDomino
