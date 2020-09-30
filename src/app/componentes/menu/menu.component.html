@@ -1,4 +1,4 @@
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" id="navDomino">
     <a class="navbar-brand"><img src="assets/images/logo_appdomino_white.png" width="200px"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -14,7 +14,7 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" routerLink="jugador"> Agregar Jugadores</a>
             <a class="dropdown-item" routerLink="listar-jugador">Listado de Jugadores</a>
-            <a class="dropdown-item" routerLink="parejas">Parejas y Equipos</a>
+            <a class="dropdown-item" routerLink="parejas">Parejas</a>
           </div>
         </li>
         <li class="nav-item dropdown">
@@ -32,6 +32,7 @@
             <a class="dropdown-item" routerLink="listar-torneo">Listado de Torneos</a>
           </div>
         </li>
+        <!--
         <li class="nav-item">
           <a class="nav-link"routerLink="clubes">
             <svg width="0.9em" height="0.9em" viewBox="0 0 16 16" class="bi bi-shop-window" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -41,6 +42,7 @@
               <path d="M4 13V9H3v4a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9h-1v4H4z"/>
             </svg>  Clubes</a>
         </li>
+      -->
         <li class="nav-item">
           <a class="nav-link"routerLink="jueces">
             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-shield-shaded" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -48,15 +50,20 @@
               <path d="M8 2.25c.909 0 3.188.685 4.254 1.022a.94.94 0 0 1 .656.773c.814 6.424-4.13 9.452-4.91 9.452V2.25z"/>
             </svg>  Jueces</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link"routerLink="ranking">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <svg width="0.9em" height="0.9em" viewBox="0 0 16 16" class="bi bi-graph-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path d="M0 0h1v16H0V0zm1 15h15v1H1v-1z"/>
               <path fill-rule="evenodd" d="M14.39 4.312L10.041 9.75 7 6.707l-3.646 3.647-.708-.708L7 5.293 9.959 8.25l3.65-4.563.781.624z"/>
               <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4h-3.5a.5.5 0 0 1-.5-.5z"/>
-            </svg>
-              Ranking</a>
+            </svg> Ranking
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" routerLink="ranking-historial">Historial Ranking</a>
+            <a class="dropdown-item" routerLink="ranking">Ranking Nacional</a>
+          </div>
         </li>
+
         <li class="nav-item">
           <a class="nav-link"routerLink="mensajes">
             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chat-left-text" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -72,7 +79,12 @@
             </svg>  Configuración</a>
         </li>
       </ul>
-      
+      <button class="btn btn-success d-lg-inline-block" (click)="recharge()">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-repeat" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+          <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+        </svg> Actualizar
+      </button>>
       
       <!--MODAL MESAS-->
 

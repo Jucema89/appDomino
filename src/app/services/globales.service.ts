@@ -8,7 +8,7 @@ pouchDB.plugin(require('pouchdb-find'));
 import Swal from 'sweetalert2';
 
 declare var $: any;
-// user admin; pass = ncQ4wK,;pWf2ab]F
+// user admin; pass = ZcfF#T8SP14T
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +45,33 @@ export class GlobalesService {
       text: texto,
       icon: icono,
       confirmButtonText: boton,
+    });
+  }
+  saveUserLocal(data) {
+    const password = data.pass;
+    return this.db.put({
+        _id: '_local/users' + password,
+        name: data.name,
+        mail: data.mail,
+        pass: data.pass,
+      });
+  }
+  deleteUserLocal(id) {
+    this.db.get(id).then((doc) => {
+      return this.db.delete(doc).then((res) => {
+        if (res.ok === true) {
+          alert('user deleted');
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+  }
+  getUserLocal(pass) {
+    return this.db.get('_local/users' + pass).then((res) => {
+      return res;
+    }).catch((err) => {
+      console.log(err);
     });
   }
   saveConfig(data) {

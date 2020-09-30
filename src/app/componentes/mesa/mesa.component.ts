@@ -354,8 +354,8 @@ export class MesaComponent implements OnInit, OnDestroy {
                 this.borrarJugadorList(player4).then((res4) => {
                   if (res4.ok === true) {
                     Swal.fire({
-                      title: 'los 4 jugadores se borraron de List',
-                      text: 'Los resultados de esta mesa se agregaron al ranking',
+                      title: 'Mesa Creada',
+                      text: 'Mesa lista para recibir datos',
                       icon: 'success',
                       confirmButtonText: 'Genial!',
                     });

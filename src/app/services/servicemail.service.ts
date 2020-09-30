@@ -68,14 +68,20 @@ export class ServiceMail {
       return this.dbMensajes.remove(doc);
     });
   }
+  postApiMail(bodyMessage) {
+    const urlApi = this.serverMasivo;
+    return this.http.post(urlApi, bodyMessage, {
+    });
+  }
   sendMail(mailTO, subjectMail, messageMail) {
     this.msjHtml = `
     <html>
-      <h2>
-        Hola desde server Nodejs
-      </h2>
+      <img src="https://fulldominocolombia.com/wp-content/uploads/logo_appdomino_black.png" width="200px" heigth="auto">
+      <h2>` + subjectMail + `</h2>
       <p>` + messageMail + `</p>
-      <a target="_blank" href="https://geeklass.com" >Click me</a>
+      <a target="_blank" href="https://app.fulldomino.com" >Ir a AppDomino</a>
+      <p style="font-size:8px" > Este mensaje fue enviado de manera automatica.</p>
+      <p style="font-size:8px" >Si este mensaje llego a Spam; favor indicar que  no es spam</p>
     </html>`;
     const bodyRequest = {
         host: this.smtpUrl,
@@ -91,11 +97,6 @@ export class ServiceMail {
     this.postApiMail(bodyRequest).subscribe((resp) => {
       console.log(resp);
       // respuesta de api server mail
-    });
-  }
-  postApiMail(bodyMessage) {
-    const urlApi = this.serverMasivo;
-    return this.http.post(urlApi, bodyMessage, {
     });
   }
   sync(urlRemote: string) {

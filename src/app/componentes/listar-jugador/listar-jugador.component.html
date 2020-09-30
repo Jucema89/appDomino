@@ -1,6 +1,6 @@
-<section class="allSection" id="listar-jugadores" >
+<section class="allSection">
   <div class="col-md-12" >
-    <table class="table table-hover">
+    <table class="table p-4 m-2 shadow-lg table-sm table-hover">
       <thead class="thead-dark" >
         <tr>
           <th>CC / DNI</th>
@@ -10,13 +10,27 @@
           <th>Email</th>
           <th>Estado</th>
           <th>Ciudad</th>
-          <th>Equipo</th>
           <th></th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let player of allPlayers">
+        <tr *ngIf="!allPlayers">
+          <td colspan="7" class="text-center">
+            <span  class="spinner-border spinner-border text-success" role="status" aria-hidden="true"></span>
+          </td>
+        </tr>
+        <!--<tr *ngIf="allPlayers.length < 1">
+          <td colspan="7" class="text-center p-4">
+            <svg width="10em" height="10em" viewBox="0 0 16 16" class="bi bi-emoji-neutral" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path fill-rule="evenodd" d="M4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z"/>
+              <path d="M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+            </svg><br>
+            <h2>No Hay Jugadores</h2>
+          </td>
+        </tr>-->
+        <tr *ngFor="let player of allPlayers | paginate: { itemsPerPage: 9, currentPage: page }">
           <td>{{ player.DNI }}</td>
           <td>{{ player.nombre }}</td>
           <td>{{ player.apellido }}</td>
@@ -24,13 +38,18 @@
           <td>{{ player.mail }}</td>
           <td>{{ player.estado }}</td>
           <td>{{ player.ciudad }}</td>
-          <td>{{ player.teamName }}</td>
           <td>
-            <button class="btn btn-info" data-toggle="modal" data-target="#editaJugador" (click)="playerShow(player._id)" ><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" d="M5.707 13.707a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391L10.086 2.5a2 2 0 0 1 2.828 0l.586.586a2 2 0 0 1 0 2.828l-7.793 7.793zM3 11l7.793-7.793a1 1 0 0 1 1.414 0l.586.586a1 1 0 0 1 0 1.414L5 13l-3 1 1-3z"/>
-              <path fill-rule="evenodd" d="M9.854 2.56a.5.5 0 0 0-.708 0L5.854 5.855a.5.5 0 0 1-.708-.708L8.44 1.854a1.5 1.5 0 0 1 2.122 0l.293.292a.5.5 0 0 1-.707.708l-.293-.293z"/>
-              <path d="M13.293 1.207a1 1 0 0 1 1.414 0l.03.03a1 1 0 0 1 .03 1.383L13.5 4 12 2.5l1.293-1.293z"/>
-            </svg></button>
+            <button class="btn btn-success" data-toggle="modal" data-target="#editaJugador" 
+            (click)="
+            getOnePlayer(player.DNI);
+            validateDuo(player.duoId); 
+            disEnable(playerOne._id + 'ubicacion2', playerOne._id + 'ubicacion1');
+            disEnable(playerOne._id + 'ubicacion3', playerOne._id + 'ubicacion1');
+            ">
+              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+              </svg>
+            </button>
           </td>
         <td>
           <swal
@@ -47,157 +66,201 @@
             <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
           </svg></button>
           </td>
-          
+        </tr>
+        <tr *ngIf="allPlayers" colspan="7" class="text-center p-4" >
+          <pagination-controls class="align-content-center" (pageChange)="page = $event"></pagination-controls>
         </tr>
       </tbody>
     </table>
+    <!-- Modal -->
+    <div class="modal fade" id="editaJugador" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+          <div class="modal-body p-4">
+            <div class="row pb-3">
+              <div class="col-md-11 text-center">
+                <h4>
+                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-lines-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7 1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm2 9a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+                  </svg> Editar Jugador
+                </h4>
+              </div>
+                <button class="col-md-1 btn btn-danger" data-dismiss="modal" aria-label="Close">
+                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                  </svg>
+                </button>
+            </div>
+            <form [formGroup]="UpdateJugador">
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label>Nombre</label>
+                  <input (click)="updatePlayerClick(playerOne._id, 'name')" id="{{playerOne._id}}nameInput1" type="text" class="form-control" value="{{playerOne.nombre}}" readonly>
 
-<!-- Modal -->
-<div class="modal fade" id="editaJugador" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div *ngFor="let player of searchPlayers" class="modal-header row">
-        <div class="col-md-8">
-          <h4><span class="badge badge-success"></span> Formulario de Modificación individual</h4><br>
-          <span class="text-muted" id="IDBD" >{{ player._id }} </span>
-        </div>
-        <div class="col-md-4" >
-          <button type="button" class="btn btn-lg btn-success">
-            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-badge-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm4.5 0a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5 2.755C12.146 12.825 10.623 12 8 12s-4.146.826-5 1.755V14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-.245z"/>
-            </svg> {{ player.nombre }} <span class="badge badge-light"> DNI: {{ player.DNI }} </span>
-          </button>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span class="badge badge-danger" aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="UpdateJugador">
-          <div class="row">
-            <div class="col-md-6">
-              <table *ngFor="let player of searchPlayers" class="table table-striped">
-                <tr>
-                  <th>DATO</th>
-                  <th>VALOR ACTUAL</th>
-                  <th>NUEVO VALOR</th>
-                </tr>
-                <tr>
-                  <th>CC / DNI</th>
-                  <td >{{ player.DNI }}</td>
-                  <td> <input formControlName="cc" class="form-control input-lg" /> </td>
-                </tr>
-                <tr>
-                  <th>Apellido</th>
-                  <td>{{ player.apellido }}</td>
-                  <td><input formControlName="lastName" id="newApellido" class="form-control input-lg" /> </td>
-                </tr>
-                <tr>
-                  <th>Email</th>
-                  <td>{{ player.mail }}</td>
-                  <td> <input formControlName="mail" class="form-control input-lg" /></td>
-                </tr>
-              </table>
-            </div>
-            <div class="col-md-6">
-              <table *ngFor="let player of searchPlayers" class="table table-striped">
-                <tr>
-                  <th>DATO</th>
-                  <th>VALOR ACTUAL</th>
-                  <th>NUEVO VALOR</th>
-                </tr>
-                <tr>
-                  <th>Nombre</th>
-                  <td>{{ player.nombre }}</td>
-                  <td> <input formControlName="name" class="form-control input-lg" /> </td>
-                </tr>
-                <tr>
-                  <th>Celular</th>
-                  <td>{{ player.celular }}</td>
-                  <td> <input formControlName="phone" class="form-control input-lg" /> </td>
-                </tr>
-                <tr>
-                  <th>Dirección</th>
-                  <td>{{ player.direccion }}</td>
-                  <td> <textarea formControlName="address" class="form-control input-lg"></textarea></td>
-                </tr>
-              </table>
-            </div>
-            <div class="col-md-12 container" >
-                <table *ngFor="let player of searchPlayers" class="table table-striped">
+                  <input class="form-control d-none" (blur)="updatePlayerBlur(playerOne._id, 'name', $event.target.value)" id="{{playerOne._id}}nameInput2" (keyup)="toMayusculas($event.target)" type="text" formControlName="name">
+
+                  <small class="d-none" id="{{playerOne._id}}nameSmall">{{playerOne.nombre}}</small>
+
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label>Apellido</label>
+
+                  <input (click)="updatePlayerClick(playerOne._id, 'lastName')" id="{{playerOne._id}}lastNameInput1" type="text" class="form-control" value="{{playerOne.apellido}}" readonly>
+
+                  <input class="form-control d-none" (blur)="updatePlayerBlur(playerOne._id, 'lastName', $event.target.value)" id="{{playerOne._id}}lastNameInput2" type="text" (keyup)="toMayusculas($event.target)" formControlName="lastName">
+
+                  <small class="d-none" id="{{playerOne._id}}lastNameSmall">{{playerOne.apellido}}</small>
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label>DNI</label>
+                  <input (click)="updatePlayerClick(playerOne._id, 'cc')" id="{{playerOne._id}}ccInput1" type="text" class="form-control" value="{{playerOne.DNI}}" readonly>
+
+                  <input class="form-control d-none" (blur)="updatePlayerBlur(playerOne._id, 'cc', $event.target.value)" id="{{playerOne._id}}ccInput2" type="text" formControlName="cc">
+
+                  <small class="d-none" id="{{playerOne._id}}ccSmall">{{playerOne.DNI}}</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label>Correo</label>
+
+                  <input (click)="updatePlayerClick(playerOne._id, 'mail')" id="{{playerOne._id}}mailInput1" type="text" class="form-control" value="{{playerOne.mail}}" readonly>
+
+                  <input class="form-control d-none" (blur)="validateExistingMail(playerOne._id, $event.target.value)" id="{{playerOne._id}}mailInput2" type="text" formControlName="mail">
+
+                  <small class="d-none" id="{{playerOne._id}}mailSmall">{{playerOne.mail}}</small>
+
+                  <!--Validate email -->
+                  <small id="mailError" class="d-none invalid-feedback">
+                    Correo ya esta en uso
+                  </small>
+                  <small id="mailSuccess" class="d-none valid-feedback">
+                    Correo Valido
+                  </small>
+                  <small id="mailEmpity" class="d-none invalid-feedback">
+                    Correo con errores
+                  </small>
+
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Celular</label>
+                  <input (click)="updatePlayerClick(playerOne._id, 'celular')" id="{{playerOne._id}}celularInput1" type="text" class="form-control" value="{{playerOne.celular}}" readonly>
+
+                  <input class="form-control d-none" (blur)="updatePlayerBlur(playerOne._id, 'celular', $event.target.value)" id="{{playerOne._id}}celularInput2" type="text" formControlName="celular">
+
+                  <small class="d-none" id="{{playerOne._id}}celularSmall">{{playerOne.celular}}</small>
+                </div>
+                <!--Geo Locked-->
+                <div class="form-group col-md-8" id="{{playerOne._id}}ubicacion1">
                   <div class="row">
-                    <div class="col-md-4" >
-                      <tr>
-                        <th>Pais</th>
-                        <td>{{ player.pais }}</td>
-                        <td> 
-                          <select *ngIf="getCountries()" formControlName="selectedCountry" (change)="onSelectCountry($event.target.value)" class="form-control input-lg">
-                          <option value="0">Select Country</option>
-                          <option *ngFor="let country of getCountries()" id="country"  value= {{country.id}}>{{country.name}}</option>
-                          </select>
-                        </td>
-                      </tr>
+                    <div class="form-group col-md-3">
+                      <input type="text" class="form-control" value="{{playerOne.pais}}" readonly>
                     </div>
-                    <div class="col-md-4" >
-                      <tr>
-                        <th>Estado</th>
-                        <td>{{ player.estado }}</td>
-                        <td> 
-                          <select id="state" *ngIf="states" formControlName="selectedState" (change)="onSelectState($event.target.value)" class="form-control input-lg">
-                            <option value="0">Select State</option>
-                            <option *ngFor="let state of states" id={{state.name}} value={{state.id}}>{{state.name}}</option>
-                          </select>
-                        </td>
-                      </tr>
+                    <div class="form-group col-md-3">
+                      <input type="text" class="form-control" value="{{playerOne.estado}}" readonly>
                     </div>
-                    <div class="col-md-4" >
-                      <tr>
-                        <th>Ciudad</th>
-                        <td>{{ player.ciudad }}</td>
-                        <td> 
-                          <select id="city" class="form-control input-lg" formControlName="selectedCity">
-                            <option *ngIf="!selectedState"  value="0">Select City</option>
-                            <option *ngFor="let city of cities" id={{city.name}} value={{city.name}} >{{city.name}}</option>
-                          </select>
-                        </td>
-                      </tr>
+                    <div class="form-group col-md-3">
+                      <input type="text" class="form-control" value="{{playerOne.ciudad}}" readonly>
+                    </div>
+                    <div class="form-group col-md-3">
+                      <button (click)="disEnable(playerOne._id + 'ubicacion1', playerOne._id + 'ubicacion2')" class="btn btn-secondary" >
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                        </svg>
+                      </button>
                     </div>
                   </div>
-              </table>
-            </div>
-            <div class="col-md-12" >
-              <div class="row">
-                <div class="col-md-3">
-                  <a class="btn btn-outline-success" data-toggle="collapse" href="#collapseValidate" role="button" aria-expanded="false" aria-controls="collapseValidate" (click)="addAddress(UpdateJugador.value.selectedCountry, UpdateJugador.value.selectedState, UpdateJugador.value.selectedCity)">Validar</a>
                 </div>
-                <div style="font-weight: 600; font-size: 18px;" class="col-md-3" formControlName="nameCountry" id="nameCountry">
+                <!--Geo Select-->
+                <div  id="{{playerOne._id}}ubicacion2" class="form-group col-md-8 d-none">
+                  <div class="row">
+                    <div class="form-group col-md-3">
+                      <label class="control-label" for="country">País</label>
+                      <select *ngIf="getCountries()" formControlName="selectedCountry" (change)="onSelectCountry($event.target.value)" class="form-control input-lg">
+                      <option value="0">Select Country</option>
+                      <option *ngFor="let country of getCountries()" id="country"  value= {{country.id}}>{{country.name}}</option>
+                      </select>
+                      <small id="{{playerOne._id}}paisSmall">{{playerOne.pais}}</small>  
+                      </div>
+                    <div class="form-group col-md-3">
+                      <label  class="control-label" for="States">Estado</label>
+                      <select id="state" *ngIf="states" formControlName="selectedState" (change)="onSelectState($event.target.value)" class="form-control input-lg">
+                      <option value="0">Select State</option>
+                      <option *ngFor="let state of states" id={{state.id}} value={{state.id}}>{{state.name}}</option>
+                      </select>
+                      <small id="{{playerOne._id}}estadoSmall">{{playerOne.estado}}</small> 
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="control-label" for="City">Ciudad</label>
+                        <select id="city" class="form-control input-lg" formControlName="selectedCity">
+                        <option *ngIf="!selectedState"  value="0">Select City</option>
+                        <option *ngFor="let city of cities" id={{city.id}} value={{city.name}} >{{city.name}}</option>
+                        </select>
+                        <small id="{{playerOne._id}}ciudadSmall">{{playerOne.ciudad}}</small> 
+                    </div>
+                    <div class="form-group col-md-3">
+                      <button class="btn btn-success" (click)="addAddress(UpdateJugador.value.selectedCountry, UpdateJugador.value.selectedState, UpdateJugador.value.selectedCity); disEnable(playerOne._id + 'ubicacion2', playerOne._id + 'ubicacion3')">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div style="font-weight: 600; font-size: 18px;" class="col-md-3"  formControlName="nameState" id="nameState">
+                <!--Geo Check-->
+                <div  id="{{playerOne._id}}ubicacion3" class="form-group col-md-8 d-none">
+                  <div class="row">
+                    <div class="form-group col-md-4">
+                      <span id="nameCountry" type="text" class="form-control" formControlName="nameCountry">
+                      </span>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <span class="form-control" formControlName="nameState" id="nameState">
+                      </span>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <span id="nameCity" type="text" class="form-control" formControlName="nameCity">
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div style="font-weight: 600; font-size: 18px;" class="col-md-3" formControlName="nameCity" id="nameCity" >
+
+                <div class="form-group col-md-4">
+                  <label>Direccion</label>
+
+                  <input (click)="updatePlayerClick(playerOne._id, 'direccion')" id="{{playerOne._id}}direccionInput1" type="text" class="form-control" value="{{playerOne.direccion}}" readonly>
+
+                  <input class="form-control d-none" (blur)="updatePlayerBlur(playerOne._id, 'direccion', $event.target.value)" id="{{playerOne._id}}direccionInput2" type="text" formControlName="direccion">
+
+                  <small class="d-none" id="{{playerOne._id}}direccionSmall">{{playerOne.direccion}}</small>
                 </div>
               </div>
-            </div> 
+              <button class="btn btn-success" (click)="updatePlayerData(UpdateJugador.value, playerOne.DNI)" >
+                Guardar
+              </button>
+              <button class="btn btn-secondary" (click)="eraseForm()">
+                Limpiar
+              </button>
+            </form>
           </div>
-        </form>
-      </div>
-      <div *ngFor="let player of searchPlayers" class="modal-footer collapse" id="collapseValidate">
-        <swal
-        #actualizarSwal
-        title="Seguro quieres actualizar este Jugador?"
-        text="Perderas los datos antiguos"
-        icon="question"
-        [showCancelButton]="true"
-        [focusCancel]="true"
-        (confirm)= "add(player._id, UpdateJugador.value, copiarDatos('nameCountry'), copiarDatos('nameState'), copiarDatos('nameCity')); eraseForm()"
-        [swalOptions]="{ confirmButtonText: 'Si Actualizar', cancelButtonText:'Cancelar' }">
-      </swal>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-success" [swal]="actualizarSwal" >Actualizar Datos</button>
+          <div *ngFor="let player of searchPlayers" class="modal-footer collapse" id="collapseValidate">
+            <swal
+            #actualizarSwal
+            title="Seguro quieres actualizar este Jugador?"
+            text="Perderas los datos antiguos"
+            icon="question"
+            [showCancelButton]="true"
+            [focusCancel]="true"
+            (confirm)= "add(player._id, UpdateJugador.value, copiarDatos('nameCountry'), copiarDatos('nameState'), copiarDatos('nameCity')); eraseForm()"
+            [swalOptions]="{ confirmButtonText: 'Si Actualizar', cancelButtonText:'Cancelar' }">
+          </swal>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-success" [swal]="actualizarSwal" >Actualizar Datos</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
   
 
 </div>

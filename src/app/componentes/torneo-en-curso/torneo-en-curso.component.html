@@ -17,19 +17,24 @@
                                 </svg></span></h3>
                             </th>
                         </tr>
+                        <tr *ngIf="!torActive">
+                          <td colspan="2" class="text-center">
+                            <span  class="spinner-border spinner-border text-success" role="status" aria-hidden="true"></span>
+                          </td>
+                        </tr>
                         <tr *ngFor="let tor of torActive">
                             <th class="col-md-12 text-center">
-                                <button  style="margin-left:30px;" (click)=" getOneTorneo(tor._id); sendIdTor(tor._id)" data-dismiss="modal"  class="btn btn-outline-success grow"> {{ tor.nombre }}
+                                <button  style="margin-left:30px;" (click)=" getOneTorneo(tor._id); getJugadoresList(tor._id); sendIdTor(tor._id)" data-dismiss="modal"  class="btn btn-outline-success grow"> {{ tor.nombre }}
                                   <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                     <path fill-rule="evenodd" d="M7.646 11.354a.5.5 0 0 1 0-.708L10.293 8 7.646 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
                                     <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
                                   </svg>
                                 </button>
-                            </th>
+                            </th>  
                         </tr>
                         <tr>
-                            <p>Si aun no hay torneos, crea uno <button class="btn btn-success" (click)="goCreateTor()" data-dismiss="modal" >Volver</button></p>
+                            <p>Si aun no hay torneos, crea uno <button class="btn btn-link" (click)="goCreateTor()" data-dismiss="modal" >Volver</button></p>
                         </tr>
                         
                     </table>
@@ -102,7 +107,9 @@
                     <td>{{player.nombre}} </td>
                     <td><span class="badge badge-dark"> DNI: {{player.DNI}}</span></td>
                     <td>
-                      <button style="margin-left: 10px;" class="btn btn-sm btn-success" (click)="addPlayerAronda(player)">
+                      <button 
+                      *ngFor="let dato of oneTor" [ngClass]="{'d-none': dato.numeroParticipantes === playersAdded}"
+                      style="margin-left: 10px;" class="btn btn-sm btn-success" (click)="addPlayerAronda(player)">
                         <svg width="1.7em" height="1.7em" viewBox="0 0 16 16" class="bi bi-caret-right-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                           <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
                         </svg>
@@ -141,7 +148,11 @@
                       <td>{{player.doc.nombre}} </td>
                       <td><span class="badge badge-dark"> DNI: {{player.doc.DNI}}</span></td>
                       <td>
-                        <button style="margin-left: 10px;" class="btn btn-sm btn-success" (click)="addPlayerAronda(player.doc)">
+                        <!--Boton que agrega players al tor-->
+                        <button 
+                        *ngFor="let dato of oneTor"
+                        [ngClass]="{ 'd-none': dato.numeroParticipantes  <= playersAdded, enabled: dato.numeroParticipantes  > playersAdded }"
+                        style="margin-left: 10px;" class="btn btn-sm btn-success" (click)="addPlayerAronda(player.doc)">
                           <svg width="1.7em" height="1.7em" viewBox="0 0 16 16" class="bi bi-caret-right-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
                           </svg>
@@ -151,9 +162,7 @@
                   </tbody>
                 </table>
               </div>
-              
             </div>
-           
           </div>
         </div>
         <div class="col-md-8 container" id="estado-torneo" > 
@@ -183,7 +192,7 @@
                                 <p><b>Modalidad: </b> {{ dato.modoJuego }} | {{ dato.modoIndividual }}</p>
                                 <p><b>Sistema: </b> {{ dato.sistema }}</p>
                                 <p><b>Meta de Juego: </b>{{ dato.metaJuego }}</p>
-                                <p><b>No de Jugadores: </b> {{ dato.numeroParticipantes }}</p>
+                                <p><b>No de Jugadores: </b> <span class="badge badge-success">{{ dato.numeroParticipantes }} / {{playersAdded}}</span></p>
                                 <p><b>No de Mesas: </b> {{ dato.mesas }}</p>
                                 <p><b>Ubicación: </b> {{ dato.estado }} | {{ dato.ciudad }}</p>
                                 <br>
@@ -219,12 +228,9 @@
                 </div>
             </div>
             <div class="col-md-12 text-center" *ngFor="let dato of oneTor">
-              {{nRamdon}}
-                <button (click)="changeFases(dato._id); sendIdTor(dato._id)"
+                <button *ngFor="let dato of oneTor"
+                [ngClass]="{ 'd-none': dato.numeroParticipantes  > playersAdded }" (click)="changeFases(dato._id); sendIdTor(dato._id)"
                  class="btn btn-success btn-lg">Continuar</button>
-                 <button class="btn btn-info" (click)="sorteAleatorioDeMesas()">
-                   Sorteo
-                 </button>
             </div>
         </div>
     </div>

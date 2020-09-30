@@ -14,10 +14,12 @@ import { ConfiguracionComponent } from './componentes/configuracion/configuracio
 import { InicioComponent } from './componentes/inicio/inicio.component';
 import { JuecesComponent } from './componentes/jueces/jueces.component';
 import { RankingComponent } from './componentes/ranking/ranking.component';
+import { RankingHistoryComponent } from './componentes/ranking-history/ranking-history.component';
 import { ClubesComponent } from './componentes/clubes/clubes.component';
 import { SendMailComponent } from './componentes/send-mail/send-mail.component';
 import { CedulaMesaComponent } from './componentes/printer/cedula-mesa/cedula-mesa.component';
 import { PrintLayoutComponent } from './componentes/printer/print-layout/print-layout.component';
+
 
 
 
@@ -34,6 +36,7 @@ const routes: Routes = [
   {path: 'torneo-en-curso', component: TorneoEnCursoComponent},
   {path: 'rondas', component: RondasComponent},
   {path: 'ranking', component: RankingComponent},
+  {path: 'ranking-historial', component: RankingHistoryComponent},
   {path: 'jueces', component: JuecesComponent},
   {path: 'ejemplo', component: EjemploComponent},
   {path: 'configuracion', component: ConfiguracionComponent},

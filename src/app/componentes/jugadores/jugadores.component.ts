@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import pouchDB from 'pouchdb';
+pouchDB.plugin(require('pouchdb-find'));
 import countries from 'src/assets/json/countries.json';
 import states from 'src/assets/json/states.json';
 import cities from 'src/assets/json/cities.json';
 import { GlobalesService } from '../../services/globales.service';
 import { DbJugadoresService } from '../../services/db.jugadores.service';
+import { Rankings } from '../../services/rankings.service';
 import { DbTournamentService } from '../../services/db.tournament.service';
 import Swal from 'sweetalert2';
+
 declare var $: any;
 
 @Component({
@@ -37,6 +41,7 @@ export class JugadoresComponent implements OnInit {
   searchPlayers: any[];
   constructor(
     private db: DbJugadoresService,
+    private Ranking: Rankings,
     private globalesService: GlobalesService,
     private dbTorneos: DbTournamentService,
     private builder: FormBuilder,
@@ -57,7 +62,7 @@ export class JugadoresComponent implements OnInit {
         nameCountry: [' ', Validators.required],
         nameState: [' ', Validators.required],
         nameCity: [' ', Validators.required],
-        idPareja: ['']
+        // idPareja: ['']
       });
       this.FormSearch = this.builder.group({
         dataPlayer: ['', Validators.required],
@@ -101,7 +106,7 @@ export class JugadoresComponent implements OnInit {
           return state.id === Number(idState);
         });
     if ( control === 2) { txtState.innerHTML = stateName.name;
-            } else{ console.log(stateName); }
+            } else { console.log(stateName); }
 
     const cityName = idCity;
     if ( control === 2) { txtCity.innerHTML = cityName;
@@ -135,6 +140,20 @@ export class JugadoresComponent implements OnInit {
     console.log(datos);
     const pass = this.generateRandomPass();
     this.db.addPlayer(datos, pass, country, state, city);
+    // crea player in ranking
+    const player = {
+      _id: new Date().toISOString(),
+      nombre: datos.name.trim().toUpperCase(),
+      dni: datos.cc,
+      puntos: 0,
+      torneos: {}
+      };
+    this.Ranking.savePlayerinRanking(player).then((answer) => {
+      if (answer.ok === true) {
+        console.log('Jugador agregado a ranking');
+        console.log(player);
+      }
+    });
     console.log(datos);
   }
   async getTodos() {
@@ -175,31 +194,74 @@ export class JugadoresComponent implements OnInit {
       const error = document.getElementById('dniError');
       const vacio = document.getElementById('dniEmpity');
       const ok = document.getElementById('dniSuccess');
-      this.db.showTodos().then((players) => {
-        const n = players.rows.length;
-        for (let i = 0; i < n; i++) {
-          if (+dni === players.rows[i].doc.DNI) {
-            vacio.classList.add('d-none');
-            error.classList.remove('d-none');
-            ok.classList.add('d-none');
-            inputDni.classList.remove('is-valid');
-            inputDni.classList.add('is-invalid');
-          } else if (+dni !== players.rows[i].doc.DNI && dni !== '' && dni.length > 4) {
-            vacio.classList.add('d-none');
-            inputDni.classList.remove('is-invalid');
-            inputDni.classList.add('is-valid');
-            ok.classList.remove('d-none');
-            error.classList.add('d-none');
-          } else if (dni === '' || dni.length <= 4 ) {
-            vacio.classList.remove('d-none');
-            inputDni.classList.add('is-invalid');
-            ok.classList.add('d-none');
-            error.classList.add('d-none');
+      if ( dni === '' || dni.length <= 4 ) {
+        vacio.classList.remove('d-none');
+        inputDni.classList.add('is-invalid');
+        ok.classList.add('d-none');
+        error.classList.add('d-none');
+      } else if ( dni !== '' && dni.length > 4) {
+        this.dniInUse(dni).then((response) => {
+          const dniUsed = response;
+          if ( dniUsed === false) {
+              vacio.classList.add('d-none');
+              error.classList.remove('d-none');
+              ok.classList.add('d-none');
+              inputDni.classList.remove('is-valid');
+              inputDni.classList.add('is-invalid');
+            } else if ( dniUsed === true ) {
+              vacio.classList.add('d-none');
+              inputDni.classList.remove('is-invalid');
+              inputDni.classList.add('is-valid');
+              ok.classList.remove('d-none');
+              error.classList.add('d-none');
+            }
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
+    }
+    dniInUse(dni) {
+      // retorna false si el dni ya existe
+        return this.db.showTodos().then((players) => {
+          const n = players.rows.length;
+          console.log('Players conteo = ' + n);
+          for (let i = 0; i < n; i++) {
+            if (+dni === players.rows[i].doc.DNI) {
+             return false;
+            }
           }
-        }
-      });
+          return true;
+        }).catch((err) => {
+          console.log(err);
+        });
+    }
+    validatorPhone(dato) {
+      const input = document.getElementById('phone');
+      const error = document.getElementById('phoneError');
+      const vacio = document.getElementById('phoneEmpity');
+      const ok = document.getElementById('phoneSuccess');
+      if ( dato === '') {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+        vacio.classList.remove('d-none');
+        error.classList.add('d-none');
+        ok.classList.add('d-none');
+      } else if (dato !== '' && dato.length < 10) {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+        vacio.classList.add('d-none');
+        error.classList.remove('d-none');
+        ok.classList.add('d-none');
+      } else if (dato !== '' && dato.length >= 10) {
+        input.classList.add('is-valid');
+        input.classList.remove('is-invalid');
+        vacio.classList.add('d-none');
+        error.classList.add('d-none');
+        ok.classList.remove('d-none');
+      }
     }
     validateEmail(mail) {
+      // retorna true si el mail es valido
       // tslint:disable-next-line: max-line-length
       const emailPattern = (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
       return emailPattern.test(mail);
@@ -209,30 +271,64 @@ export class JugadoresComponent implements OnInit {
       const error = document.getElementById('mailError');
       const vacio = document.getElementById('mailEmpity');
       const ok = document.getElementById('mailSuccess');
-      this.db.showTodos().then((players) => {
-        const n = players.rows.length;
-        console.log('validacion de mail = ' + this.validateEmail(mail));
-        for (let i = 0; i < n; i++) {
-          if (mail === players.rows[i].doc.mail) {
-            vacio.classList.add('d-none');
-            error.classList.remove('d-none');
-            ok.classList.add('d-none');
-            inputMail.classList.remove('is-valid');
-            inputMail.classList.add('is-invalid');
-          } else if (mail !== players.rows[i].doc.mail && mail !== '' && this.validateEmail(mail) === true) {
-            vacio.classList.add('d-none');
-            inputMail.classList.remove('is-invalid');
-            inputMail.classList.add('is-valid');
-            ok.classList.remove('d-none');
-            error.classList.add('d-none');
-          } else if (mail === '' || this.validateEmail(mail) === false) {
-            vacio.classList.remove('d-none');
-            inputMail.classList.add('is-invalid');
-            ok.classList.add('d-none');
-            error.classList.add('d-none');
-          }
+      const mailCorrect = this.validateEmail(mail);
+      if (mail === '') {
+        inputMail.classList.remove('is-valid');
+        inputMail.classList.add('is-invalid');
+        error.classList.add('d-none');
+        vacio.classList.remove('d-none');
+        // si mail viene con length + 1
+      }
+      if (mail.length > 1 && mailCorrect === false) {
+          // correo mal escrito
+          console.log('mal escrito');
+          inputMail.classList.remove('d-none');
+          vacio.classList.remove('d-none');
+          error.classList.add('d-none');
+          ok.classList.add('d-none');
+          inputMail.classList.remove('is-valid');
+          inputMail.classList.add('is-invalid');
         }
-      });
+      if ( mail.length > 1 && mailCorrect === true ) {
+          this.emailInUse(mail).then((response) => {
+            const mailUsed = response;
+            console.log(mailUsed);
+            if (mailUsed === false) {
+              // correo bien, pero mail esta en uso
+              console.log('mail en uso');
+              inputMail.classList.remove('d-none');
+              vacio.classList.add('d-none');
+              error.classList.remove('d-none');
+              ok.classList.add('d-none');
+              inputMail.classList.remove('is-valid');
+              inputMail.classList.add('is-invalid');
+            } else if (mailUsed === true) {
+              // mail correcto y esta libre
+              console.log('todo Ok');
+              inputMail.classList.remove('d-none');
+              vacio.classList.add('d-none');
+              error.classList.add('d-none');
+              inputMail.classList.remove('is-invalid');
+              inputMail.classList.add('is-valid');
+              ok.classList.remove('d-none');
+            }
+          });
+        }
+    }
+    emailInUse(mail) {
+      // retorna false si el mail ya existe
+        return this.db.showTodos().then((players) => {
+          const n = players.rows.length;
+          console.log('Players conteo = ' + n);
+          for (let i = 0; i < n; i++) {
+            if (mail === players.rows[i].doc.mail) {
+             return false;
+            }
+          }
+          return true;
+        }).catch((err) => {
+          console.log(err);
+        });
     }
     generateRandomPass() {
       return Math.random().toString(36).slice(-10);

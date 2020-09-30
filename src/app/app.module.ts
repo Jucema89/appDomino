@@ -32,9 +32,11 @@ import { PrintService } from './services/print.service';
 import {NgxPrintModule} from 'ngx-print';
 import { NavFloatComponent } from './componentes/nav-float/nav-float.component';
 import { SortByPipe } from './pipes/sort-by.pipe';
+import { SortBypts } from './pipes/sort-by-pts.pipe';
 import { SearchComponent } from './componentes/search/search.component';
 import { SendMailComponent } from './componentes/send-mail/send-mail.component';
 import { ServiceMail } from './services/servicemail.service';
+import { RankingHistoryComponent } from './componentes/ranking-history/ranking-history.component';
 
 
 @NgModule({
@@ -61,8 +63,10 @@ import { ServiceMail } from './services/servicemail.service';
     CedulaMesaComponent,
     NavFloatComponent,
     SortByPipe,
+    SortBypts,
     SearchComponent,
     SendMailComponent,
+    RankingHistoryComponent,
   ],
   imports: [
     BrowserModule,

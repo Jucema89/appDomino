@@ -1,0 +1,75 @@
+<section class="allSection">
+    <table class="table p-4 shadow-lg">
+        <thead>
+          <tr>
+            <th scope="col">Nombre Torneo</th>
+            <th scope="col">Participantes</th>
+            <th scope="col">Ubicacion</th>
+            <th scope="col">Revisar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let history of allRankingHistory">
+            <th scope="row">{{history.doc.datosTor.nombre}}</th>
+            <td>{{history.doc.datosTor.participantes}}</td>
+            <td>{{history.doc.datosTor.ubicacion}}</td>
+            <td>
+                <button class="btn btn-secondary" (click)="modalPlayerPoints(history.doc._id)" data-toggle="modal" data-target="#modalListPoints">
+                    <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-eye" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.134 13.134 0 0 0 1.66 2.043C4.12 11.332 5.88 12.5 8 12.5c2.12 0 3.879-1.168 5.168-2.457A13.134 13.134 0 0 0 14.828 8a13.133 13.133 0 0 0-1.66-2.043C11.879 4.668 10.119 3.5 8 3.5c-2.12 0-3.879 1.168-5.168 2.457A13.133 13.133 0 0 0 1.172 8z"/>
+                        <path fill-rule="evenodd" d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                    </svg>
+                </button>
+                <button class="btn btn-danger" (click)="deleteHistoryRanking(history.doc._id)">
+                    Borrar
+                </button>
+                 <!--MODAL RANKING TORNEO-->
+                <div class="modal fade" id="modalListPoints" tabindex="-1" role="dialog" 
+                aria-labelledby="allMesas" aria-hidden="true">
+                <div class="modal-dialog modal-xl col-md-12">
+                <div class="modal-content row">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center col-md-11" id="exampleModalLabel"><b>Puntos por:</b> {{history.doc.datosTor.nombre}}</h4> 
+                    <svg width="2em" height="2em" data-dismiss="modal" aria-label="Close" viewBox="0 0 16 16" class="bi bi-x-square-fill col-md-1" fill="#FF0000" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm9.854 4.854a.5.5 0 0 0-.708-.708L8 7.293 4.854 4.146a.5.5 0 1 0-.708.708L7.293 8l-3.147 3.146a.5.5 0 0 0 .708.708L8 8.707l3.146 3.147a.5.5 0 0 0 .708-.708L8.707 8l3.147-3.146z"/>
+                    </svg>
+                </div>
+                    <table class="table modal-body">
+                    <thead class="thead-dark">
+                        <tr>
+                        <th scope="col">
+                            <svg width="1.7em" height="1.7em" viewBox="0 0 16 16" class="bi bi-award" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M9.669.864L8 0 6.331.864l-1.858.282-.842 1.68-1.337 1.32L2.6 6l-.306 1.854 1.337 1.32.842 1.68 1.858.282L8 12l1.669-.864 1.858-.282.842-1.68 1.337-1.32L13.4 6l.306-1.854-1.337-1.32-.842-1.68L9.669.864zm1.196 1.193l-1.51-.229L8 1.126l-1.355.702-1.51.229-.684 1.365-1.086 1.072L3.614 6l-.25 1.506 1.087 1.072.684 1.365 1.51.229L8 10.874l1.356-.702 1.509-.229.684-1.365 1.086-1.072L12.387 6l.248-1.506-1.086-1.072-.684-1.365z"/>
+                            <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"/>
+                            </svg>
+                        </th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Dni</th>
+                        <th scope="col">Puntos</th>
+                        <th scope="col">Puntos Extra</th>
+                        <th scope="col">Puntos Totales</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let player of pointsPlayer | paginate: { itemsPerPage: 7, currentPage: page }; let i = index">
+                        <tr>
+                        <th scope="row">{{ 7 * (page - 1) + i + 1 }}</th>
+                        <td> {{player.nombre}} </td>
+                        <td> {{player.dni}} </td>
+                        <td> {{player.pts}} </td>
+                        <td> {{player.ptsExtra}} </td>
+                        <td> {{player.ptsTotal}} </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                    <div class="modal-footer bg-dark">
+                        <pagination-controls class="align-content-center" (pageChange)="page = $event"></pagination-controls>
+                      </div> 
+                </div>
+                </div>
+                </div>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+  </section>
+  

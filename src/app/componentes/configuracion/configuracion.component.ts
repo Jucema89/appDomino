@@ -5,9 +5,11 @@ import { DbTournamentService } from '../../services/db.tournament.service';
 import { GlobalesService } from '../../services/globales.service';
 import { DbTeamService } from '../../services/db.teams.service';
 import { DbMesas } from '../../services/db.mesas.service';
+import { Rankings } from '../../services/rankings.service';
 import pouchDB from 'pouchdb';
 pouchDB.plugin(require('pouchdb-find'));
 import Swal from 'sweetalert2';
+
 
 declare var $: any;
 
@@ -32,6 +34,7 @@ export class ConfiguracionComponent implements OnInit {
     private equiposService: DbTeamService,
     private globalService: GlobalesService,
     private mesasDB: DbMesas,
+    private Ranking: Rankings,
     private builder: FormBuilder,
     // public src: string,
     // public file: File,
@@ -179,48 +182,6 @@ smtpConfig() {
       });
     });
   }
-  /*
-  deleteSmtp() {
-    const smtpEmpity = document.getElementById('smtpEmpity');
-    const smtpClosed = document.getElementById('smtpClosed');
-    const smtpLoader = document.getElementById('smtpLoader');
-    this.globalService.db.get('_local/smtp').then((doc) => {
-      smtpLoader.classList.remove('d-none');
-      return this.globalService.db.remove(doc._id, doc._rev)
-      .then((res) => {
-        if (res.ok === 'true') {
-          this.globalService.db.put({
-            _id: '_local/smtp',
-            serverMasivo: '',
-            smtpUrl: '',
-            smtpUser: '',
-            smtpPort: '',
-            smtpPass: '',
-          }).then((resPut) => {
-            if (resPut.ok === true) {
-              smtpLoader.classList.add('d-none');
-              smtpClosed.classList.add('d-none');
-              smtpEmpity.classList.remove('d-none');
-              Swal.fire({
-                title: 'SMTP eliminado',
-                text: 'Los datos de conexión se eliminaron',
-                icon: 'success',
-                confirmButtonText: 'Genial!',
-              });
-            }
-          });
-        }
-      }).catch((err) => {
-        smtpLoader.classList.add('d-none');
-        Swal.fire({
-          title: 'SMTP no se puedo eliminar',
-          text: 'algo salio mal, CODIGO: ' + err,
-          icon: 'error',
-          confirmButtonText: 'Recibido',
-        });
-      });
-    });
-  }*/
   deleteDatabase(dataBase, nombreDb) {
     dataBase.destroy().then((res) => {
       if (res.ok === true) {
@@ -254,6 +215,9 @@ smtpConfig() {
   }
   borrarMesas() {
     this.deleteDatabase(this.mesasDB.dbMesas, 'Mesas');
+  }
+  borrarRanking() {
+    this.deleteDatabase(this.Ranking.dbRanking, 'Ranking Nacional');
   }
   copiarDatos(id) {
     const dato = id;

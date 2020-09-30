@@ -3,6 +3,8 @@ import { DbJugadoresService } from '../../services/db.jugadores.service';
 import { DbTournamentService } from '../../services/db.tournament.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DbTeamService } from '../../services/db.teams.service';
+import pouchDB from 'pouchdb';
+pouchDB.plugin(require('pouchdb-find'));
 declare var $: any;
 
 @Component({
@@ -13,6 +15,7 @@ declare var $: any;
 export class ParejasComponent implements OnInit {
   FormTeam: FormGroup;
   FormDuo: FormGroup;
+  page = 1;
   Teams: any [];
   Duos: any;
   todos: any[];
@@ -32,9 +35,9 @@ export class ParejasComponent implements OnInit {
     private dbTournament: DbTournamentService,
     private dbJugadores: DbJugadoresService,
     private dbTeams: DbTeamService,
-    private _builder: FormBuilder,
+    private builder: FormBuilder,
   ) {
-    this.FormTeam = this._builder.group({
+    this.FormTeam = this.builder.group({
       teamName: [' ', Validators.compose([Validators.minLength(3), Validators.required])],
       playerOne: [' ', Validators.required],
       playerTwo: [' ', Validators.required],
@@ -42,8 +45,7 @@ export class ParejasComponent implements OnInit {
       playerFour: [' ', Validators.required],
       playerCap: [' ', Validators.required],
     });
-    this.FormDuo = this._builder.group({
-      nameDuo: [' ', Validators.required],
+    this.FormDuo = this.builder.group({
       playerOne: [' ', Validators.required],
       playerTwo: [' ', Validators.required],
     });
@@ -139,9 +141,78 @@ export class ParejasComponent implements OnInit {
   }
   sendValueDuo(data) {
     console.log(data);
-    this.dbTeams.addDuo(data);
-    // console.log(data.playerOne);
+   // this.validateDuo(data);
+    const selecP1 = document.getElementById('inputPlayerOne');
+    const selecP2 = document.getElementById('inputPlayerTwo');
+    const p1valid = document.getElementById('p1-valid');
+    const p1invalid = document.getElementById('p1-invalid');
+    const p2valid = document.getElementById('p2-valid');
+    const p2invalid = document.getElementById('p2-invalid');
+    const p1 = data.playerOne;
+    const p2 = data.playerTwo;
+    if ( p1.duoId === '') {
+      selecP1.classList.remove('is-invalid');
+      selecP1.classList.add('is-valid');
+      p1valid.classList.remove('d-none');
+      p1invalid.classList.add('d-none');
+    } else {
+      selecP1.classList.add('is-invalid');
+      selecP1.classList.remove('is-valid');
+      p1valid.classList.add('d-none');
+      p1invalid.classList.remove('d-none');
+    }
+    if ( p2.duoId === '') {
+      selecP2.classList.remove('is-invalid');
+      selecP2.classList.add('is-valid');
+      p2valid.classList.remove('d-none');
+      p2invalid.classList.add('d-none');
+    } else {
+      selecP2.classList.add('is-invalid');
+      selecP2.classList.remove('is-valid');
+      p2valid.classList.add('d-none');
+      p2invalid.classList.remove('d-none');
+    }
+    if (p1.duoId === '' && p2.duoId === '' ) {
+      this.dbTeams.addDuo(data);
+    }
   }
+  /*
+  validateDuo(player) {
+    const p1 = player.playerOne;
+    const p2 = player.playerTwo;
+    console.log(player);
+    console.log(data);
+    const selected = document.getElementById(select);
+    const dni = player.DNI;
+    this.validateDuoIdExist(dni).then((res) => {
+      console.log(res);
+      if (res === 'vacio') {
+        selected.classList.add('is-valid');
+      } else {
+        selected.classList.add('is-invalid');
+        selected.classList.add('is-valid');
+      }
+    });
+  }
+  validateDuoIdExist(dni) {
+    console.log(dni);
+    const numb = +dni;
+    return new Promise ((result, reject) => {
+      this.dbJugadores.createIndexDNI().then(() => {
+        this.dbJugadores.showPlayerDNI(numb).then((res) => {
+          console.log(res);
+          console.log(res.docs[0].duoId);
+          if (res.docs[0].duoId === '') {
+            result ('vacio');
+          } else {
+            result (res.docs[0].duoId);
+            }
+        }).catch((err) => {
+          reject (err);
+        });
+      });
+    });
+  }*/
   // wtfNumber devuelve 1 si el dato es un numero o tiene un numero
   wtfNumber(dato) {
     const numeros = '0123456789';

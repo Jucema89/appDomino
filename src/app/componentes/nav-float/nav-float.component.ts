@@ -1,12 +1,13 @@
 import { Component, OnInit , Input } from '@angular/core';
-import { DbMesas } from '../../services/db.mesas.service';
-import { DbTournamentService } from '../../services/db.tournament.service';
-import { GlobalesService } from '../../services/globales.service';
 import pouchDB from 'pouchdb';
 pouchDB.plugin(require('pouchdb-find'));
 import Swal from 'sweetalert2';
 import { DbJuecesService } from '../../services/db.jueces.service';
-import { promise } from 'protractor';
+import { Rankings } from '../../services/rankings.service';
+import { DbMesas } from '../../services/db.mesas.service';
+import { DbTournamentService } from '../../services/db.tournament.service';
+import { GlobalesService } from '../../services/globales.service';
+import { DbJugadoresService } from '../../services/db.jugadores.service';
 declare var $: any;
 
 @Component({
@@ -20,6 +21,8 @@ export class NavFloatComponent implements OnInit {
   nRonda: number;
   arrayPlayersRandom: any;
   rankingTor: any[];
+  tablePoints: any;
+  ptsExt: any;
   @Input() idTor: any;
   remoteConect: boolean; // remote data base conect? yes - no
 
@@ -28,12 +31,16 @@ export class NavFloatComponent implements OnInit {
     private dbTournament: DbTournamentService,
     private DbJuez: DbJuecesService,
     public globales: GlobalesService,
+    public ranking: Rankings,
+    private jugadoresDb: DbJugadoresService
   ) {}
 
   ngOnInit() {
+    this.ranking.chargeRankingTables();
     this.getRankingTorPos();
     this.getAllMesas();
     this.wtfRonda();
+    this.sendIdTorRanking();
     this.dbTournament.db.changes({
       since: 'now',
       live: true,
@@ -55,12 +62,18 @@ export class NavFloatComponent implements OnInit {
       console.log(doc.ip);
       if (typeof(doc.ip) === 'string' && doc.ip !== '0.0.0.0') {
           this.remoteConect = true;
+          console.log('si hay conexion');
         } else {
           this.remoteConect = false;
+          console.log('No hay conexion');
       }
     });
   }
+  sendIdTorRanking() {
+    this.ranking.idTor = this.idTor;
+  }
   getRankingTorPos() {
+    this.page = 1;
     this.dbTournament.db.get(this.idTor).then((res) => {
       this.rankingTor = res.ranking;
     });
@@ -183,6 +196,8 @@ export class NavFloatComponent implements OnInit {
                 this.DBmesas.dbMesas = new pouchDB('mesas');
                 this.DBmesas.allSyncDb();
                 this.dbTournament.db.get(this.idTor).then((tor) => {
+                  // update rankingTor
+                  this.getRanking(tor.tipo);
                   tor.rondas.rondaActual = tor.rondas.rondaActual - 1;
                   return this.dbTournament.db.put(tor).then((info) => {
                     if (info.ok === true) {
@@ -294,67 +309,10 @@ export class NavFloatComponent implements OnInit {
       });
     return players;
      }
-  /*
-  playersAleatorios() {
-    this.dbTournament.db.get(this.idTor).then((tor) => {
-      this.jugadorAleatorio().then((player1) => {
-          const playerArray = [];
-          const p11 = player1;
-          playerArray.push(p11);
-          this.borrarJugadorList(p11.DNI).then((res) => {
-            if (res.ok === true) {
-              this.jugadorAleatorio().then((player2) => {
-                const p12 = player2;
-                playerArray.push(p12);
-                this.borrarJugadorList(p12.DNI).then((res2) => {
-                  if (res2.ok === true) {
-                    this.jugadorAleatorio().then((player3) => {
-                      const p21 = player3;
-                      playerArray.push(p21);
-                      this.borrarJugadorList(p21.DNI).then((res3) => {
-                        if (res3.ok === true) {
-                          this.jugadorAleatorio().then((player4) => {
-                            const p22 = player4;
-                            playerArray.push(p22);
-                            this.borrarJugadorList(p22.DNI).then((res4) => {
-                              if (res4.ok === true) {
-                                this.juezAleatorio().then((data) => {
-                                  playerArray.push(data.juez);
-                                  console.log(
-                                    'Mesa' + tor.mesas,
-                                    playerArray[0],
-                                    playerArray[1],
-                                    playerArray[2],
-                                    playerArray[3],
-                                    'Juez: ' + playerArray[4]
-                                  );
-                                });
-                              }
-                            });
-                          });
-                        }
-                      });
-                    });
-                  }
-                });
-              });
-            }
-          });
-        });
-    });
-    }
-    */
   allMesasRandom() {
     this.dbTournament.db.get(this.idTor).then((tor) => {
       const nMesas = tor.mesas;
       this.mesaRamdon(nMesas);
-      /*const arrayMesas = [];
-      for (let i = 0; i < nMesas; i++) {
-        this.aleatoriosPlayers(i).then((doc) => {
-          arrayMesas.push(doc);
-        });
-        console.log(arrayMesas);
-      }*/
     });
   }
   mesaRamdon(nMesas) {
@@ -373,6 +331,92 @@ export class NavFloatComponent implements OnInit {
       }
     }
   }
-
-
+  asignPointsInTable(pos) {
+    const n = pos + '';
+    return this.tablePoints[n];
+  }
+  /*
+  asignPointsExtras(dni) {
+     return new Promise ((resolve, reject) => {
+      this.dbTournament.db.get(this.idTor).then((tor) => {
+        // local 5pts -regional 7pts - nacional 10pts  - internacional 20pts - cerrado 3pts
+        const torTipo = tor.tipo;
+        const torCiudad = tor.ciudad;
+        this.jugadoresDb.showPlayerDNI(+dni).then((player) => {
+          let pts: number;
+          const playerCiudad = player.docs[0].ciudad;
+          if ( torTipo === 'Cerrado') {
+            pts = 3;
+          } else if (torTipo === 'Internacional') {
+            pts = 20;
+          } else if (torTipo === 'Nacional') {
+            pts = 10;
+          } else if ( torTipo === 'Local' && playerCiudad === torCiudad ) {
+            pts = 5;
+          } else if ( torTipo === 'Local' && playerCiudad !== torCiudad ) {
+             pts = 7;
+          }
+          console.log('pts extra = ' + pts);
+          resolve (pts);
+        });
+      }).catch((err) => {
+        reject (err);
+      });
+     })
+     ;
+  }
+  */
+  // RANKING NACIONAL
+  chargeTablePoints(typeTor) {
+    if (typeTor === 'Local') {
+      this.tablePoints = this.ranking.rankingLocales;
+      } else if (typeTor === 'Nacional') {
+        this.tablePoints = this.ranking.rankingNacionales;
+        }  else if (typeTor === 'Mundial') {
+          this.tablePoints = this.ranking.rankingMundiales;
+    }
+  }
+  getRanking(typeTor: string) {
+    console.log(typeTor);
+    this.chargeTablePoints(typeTor);
+    this.dbTournament.db.get(this.idTor).then((doc) => {
+      // const ranking = doc.ranking;
+      // const tipo = doc.tipo;
+      const n = doc.ranking.length;
+      const arrayUnOrder = [];
+      const arrayFinal = [];
+      for (let i = 0; i < n; i++) {
+        if ( i <= n) {
+          arrayUnOrder.push(doc.ranking[i]);
+        }
+      }
+      const arrayOrder = arrayUnOrder.sort((a, b) => {
+        return (b.efectividad - a.efectividad);
+      });
+      const m = arrayOrder.length;
+      for (let e = 0; e < m; e++) {
+        const num = e + 1;
+        arrayFinal.push({
+          pos: num,
+          nombre: arrayOrder[e].nombre,
+          apellido: arrayOrder[e].apellido,
+          dni: arrayOrder[e].dni,
+          pts: this.asignPointsInTable(num),
+          ptsExtra: 0,
+          ptsTotal: this.asignPointsInTable(num),
+      });
+      }
+      console.log(JSON.stringify(arrayFinal));
+      // this.ranking.updatePointsRanking(arrayFinal);
+      this.ranking.esperaDatos(arrayFinal);
+      }).catch((err) => {
+      console.log(err);
+      });
+  }
+  probarRanking() {
+    this.dbTournament.db.get(this.idTor).then((tor) => {
+      console.log('ejecutamos tor ranking' + tor.tipo);
+      this.getRanking(tor.tipo);
+    });
+  }
 }

@@ -33,10 +33,21 @@
                   Campo vacio o con errores
                 </small>
               </div>
+
               <div class="form-group col-md-6">
-                <label for="phone">Celular</label>
-                <input type="phone" formControlName="phone" class="form-control">
+                <label for="phone">*Celular</label>
+                <input id="phone" (blur)="validatorPhone($event.target.value)" type="phone" formControlName="phone" class="form-control">
+                <small id="phoneSuccess" class="d-none valid-feedback">
+                  Celular Valido
+                </small>
+                <small id="phoneEmpity" class="d-none invalid-feedback">
+                  Campo vacio 
+                </small>
+                <small id="phoneError" class="d-none invalid-feedback">
+                  Son 10 numeros
+                </small>
               </div>
+              
               <div class="form-group col-md-12">
                 <label for="mail">*Correo</label>
                 <input type="mail" id="mail" formControlName="mail" class="form-control" (blur)="validateExistingMail($event.target.value); generateRandomPass()">
@@ -50,34 +61,7 @@
                   Campo vacio o con errores
                 </small>
               </div>
-              <!--
-              <div class="form-group col-md-6">
-                <div class="form-group">
-                  <label for="email">Password</label>
-                  <div class="input-group">
-                    <input
-                      [type]="fieldTextType ? 'text' : 'password'"
-                      class="form-control"
-                      formControlName="pass"
-                    />
-                    <div class="input-group-append">
-                      <span class="input-group-text bg-dark">
-                        <a (click)="toggleFieldTextType()">
-                          <svg *ngIf="!fieldTextType" color="#fff" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-lock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"/>
-                            <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"/>
-                          </svg>
-                          <svg *ngIf="fieldTextType" color="#fff" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-unlock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"/>
-                            <path fill-rule="evenodd" d="M8.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"/>
-                          </svg>
-                        </a>  
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              -->
+
               <div class="form-group col-md-12">
                 <div class="row">
                   <div class="form-group col-md-4">
@@ -117,6 +101,7 @@
                 <label for="address">Dirección</label>
                 <input type="text" formControlName="address" class="form-control">
               </div>
+              <!--
               <div class="col-md-12" >  
                 <h5>
                   Escoge Pareja
@@ -125,7 +110,7 @@
                   Este dato se podra editar o agregar posteriormente
                 </small>
               </div>
-              <!--BARRA DE BUSQUEDA DE PAREJA-->
+              
                 <div id="searchBar" class="col-md-8" >
                   <form [formGroup]="FormSearch" (ngSubmit)="searchingPlayer(FormSearch.value)">
                     <div class="input-group" >
@@ -145,11 +130,12 @@
                     </div>
                   </form>
                 </div>
-                <!--Barra de busqueda de jugador-->
+               
                   <select formControlName="idPareja" id="searchResult" class="form-control input-lg col-md-4">
-                    <!--<option value="0">Escoge pareja</option>-->
+                    <option value="0">Escoge pareja</option>
                     <option *ngFor="let player of playerFind" value={{player._id}}>{{player.nombre}} || {{player.DNI}}</option>
                   </select>
+                -->  
               <div class="form-group col-md-12 mt-3" >
                 <div class="alert alert-danger" *ngIf="!FormJugador.valid"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-exclamation-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>

@@ -1,5 +1,5 @@
 <section class="allSection" >
-    <div class="row" >
+      <!--
         <div class="col-md-6" >
             <div class="card card-list-users" id="form-teams">
                 <div class="card-body">
@@ -16,7 +16,7 @@
                           </div>
                         </div>
                         <div class="form-group">
-                          <div class="input-group mb-2"><!--Player One-->
+                          <div class="input-group mb-2">
                             <div class="input-group-prepend">
                               <div class="input-group-text badge-success"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -31,7 +31,7 @@
                               <p *ngIf="FormTeam.get('playerOne').hasError('required') || FormTeam.get('playerOne').touched" >Debes escoger un integrante</p> 
                              </div>
                           </div>
-                          <div class="input-group mb-2"><!--Player Two-->
+                          <div class="input-group mb-2">
                             <div class="input-group-prepend">
                               <div class="input-group-text badge-success"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -43,7 +43,7 @@
                               <option *ngFor="let player of playerTwo" [ngValue]="player" >{{ player.nombre }} || DNI: {{ player.DNI }}</option>
                             </select>
                           </div>
-                          <div class="input-group mb-2"><!--Player Three-->
+                          <div class="input-group mb-2">
                             <div class="input-group-prepend">
                               <div class="input-group-text badge-success"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -55,7 +55,7 @@
                               <option *ngFor="let player of playerThree" [ngValue]="player" >{{ player.nombre }} || DNI: {{ player.DNI }}</option>
                             </select>
                           </div>
-                          <div class="input-group mb-2"><!--Player Four-->
+                          <div class="input-group mb-2">
                             <div class="input-group-prepend">
                               <div class="input-group-text badge-success"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -68,7 +68,7 @@
                             </select>
                           </div>
 
-                          <div id="selectToCap" class="d-none input-group mb-2"><!--Who is Captain-->
+                          <div id="selectToCap" class="d-none input-group mb-2">
                             <div class="input-group-prepend">
                               <div class="input-group-text badge-info"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -132,82 +132,110 @@
                 </div>
                 
               </div>
-        </div>
-        <div class="col-md-6" >
-          <div class="card card-list-users" id="form-teams">
+        </div>-->
+      <div class="col-md-12 p-4 m-2">
+          <div class="card row shadow-lg">
+            <div class="col-md-12 p-3 text-center" >
+              <h3>Formulario de Creación de Parejas</h3>
+            </div>
               <div class="card-body">
                   <div>
-                    <form class="form-row"  [formGroup]="FormDuo">
-                      <h3>Formulario de Creación de Parejas</h3>
+                    <form class="form-inline" [formGroup]="FormDuo">
                       <div class="form-group">
-                        <div class="input-group mb-2"><!--Player One-->
+                        <div class="input-group col-md-5"><!--Player One-->
                           <div class="input-group-prepend">
-                            <div class="input-group-text badge-success"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <div class="input-group-text badge-success">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.995-.944v-.002.002zM7.022 13h7.956a.274.274 0 0 0 .014-.002l.008-.002c-.002-.264-.167-1.03-.76-1.72C13.688 10.629 12.718 10 11 10c-1.717 0-2.687.63-3.24 1.276-.593.69-.759 1.457-.76 1.72a1.05 1.05 0 0 0 .022.004zm7.973.056v-.002.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10c-1.668.02-2.615.64-3.16 1.276C1.163 11.97 1 12.739 1 13h3c0-1.045.323-2.086.92-3zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
-                            </svg></div>
+                              </svg>
+                            </div>
                           </div>
-                          <input (change)="searchPlayerOne($event.target.value)" class="form-control" placeholder="Busca por DNI">
-                          <select formControlName="playerOne" id="playerOne" required>
+                          <input id="inputPlayerOne" (change)="searchPlayerOne($event.target.value)" class="form-control" placeholder="Busca por DNI">
+                          <select class="form-control" formControlName="playerOne" id="playerOne"  required>
                             <option disabled value="">Elige un Jugador</option>
                             <option *ngFor="let player of playerOne" [ngValue]="player" >{{ player.nombre }} || DNI: {{ player.DNI }}</option>
                           </select>
+                          <small id="p1-valid" class="d-none valid-feedback">
+                            No tiene Pareja
+                          </small>
+                          <small id="p1-invalid" class="d-none invalid-feedback">
+                            Ya tiene Pareja
+                          </small>
                           <div *ngIf="FormTeam.get('playerOne').errors && FormTeam.get('playerOne').dirty" class="alert alert-danger">
                             <p *ngIf="FormTeam.get('playerOne').hasError('required') || FormTeam.get('playerOne').touched" >Debes escoger un integrante</p> 
                            </div>
                         </div>
-                        <div class="input-group mb-2"><!--Player Two-->
+                        <div class="input-group col-md-5"><!--Player Two-->
                           <div class="input-group-prepend">
-                            <div class="input-group-text badge-success"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <div class="input-group-text badge-success">
+                              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.995-.944v-.002.002zM7.022 13h7.956a.274.274 0 0 0 .014-.002l.008-.002c-.002-.264-.167-1.03-.76-1.72C13.688 10.629 12.718 10 11 10c-1.717 0-2.687.63-3.24 1.276-.593.69-.759 1.457-.76 1.72a1.05 1.05 0 0 0 .022.004zm7.973.056v-.002.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10c-1.668.02-2.615.64-3.16 1.276C1.163 11.97 1 12.739 1 13h3c0-1.045.323-2.086.92-3zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
-                            </svg></div>
+                              </svg>
+                            </div>
                           </div>
-                          <input type="text" (change)="searchPlayerTwo($event.target.value)" class="form-control" placeholder="Busca por DNI">
-                          <select formControlName="playerTwo" id="playerTwo" required>
+                          <input id="inputPlayerTwo" type="text" (change)="searchPlayerTwo($event.target.value)" class="form-control" placeholder="Busca por DNI">
+                          <select formControlName="playerTwo" id="playerTwo" class="form-control" required>
                             <option disabled value="">Elige un Jugador</option>
                             <option *ngFor="let player of playerTwo" [ngValue]="player" >{{ player.nombre }} || DNI: {{ player.DNI }}</option>
                           </select>
+                          <small id="p2-valid" class="d-none valid-feedback">
+                            No tiene Pareja
+                          </small>
+                          <small id="p2-invalid" class="d-none invalid-feedback">
+                            Ya tiene Pareja
+                          </small>
+                        </div>
+                        <div class="input-group col-md-2" >
+                          <button class="btn btn-success" (click)="sendValueDuo(FormDuo.value)" [disabled]="FormDuo.invalid">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                            </svg> Crear Pareja
+                          </button>
                         </div>
                       </div>
                     </form>
-                    <div class="col-md-12"> 
-                      <button class="btn btn-success" (click)="sendValueDuo(FormDuo.value)" [disabled]="FormDuo.invalid">
-                        Crear Pareja
-                      </button>
-                    </div>
                 </div>
               </div>
-            </div>
-            <!--Tabla de Parejas-->
-            <table class="table table-hover">
-              <thead class="thead-dark" >
-                <tr>
-                  <th>ID Pareja</th>
-                  <th>Jugador 1</th>
-                  <th>Jugador 2</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let duo of Duos">
-                  <td>{{ duo._id }}</td>
-                  <td>{{ duo.jugadorUno }}</td>
-                  <td>{{ duo.jugadorDos }}</td>
-                <td>
-                  <swal
-                  #deleteSwal
-                  title="Seguro eliminaras esta pareja?"
-                  text="Este equipo se borrara"
-                  icon="question"
-                  [showCancelButton]="true"
-                  [focusCancel]="true"
-                  (confirm)="deleteDuo(duo._id)"
-                  [swalOptions]="{ confirmButtonText: 'Si Borrar', cancelButtonText:'Cancelar' }">
-                </swal>
-                  <button class="btn btn-danger" [swal]="deleteSwal">Borrar Pareja</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          </div>
       </div>
-    </div>
+      <div class="col-md-12 p-3">
+        <table class="table table-hover">
+          <thead class="thead-dark" >
+            <tr>
+              <th>ID Pareja</th>
+              <th>Jugador 1</th>
+              <th>Jugador 2</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!Duos">
+              <td colspan="3" class="text-center">
+                <span  class="spinner-border spinner-border text-success" role="status" aria-hidden="true"></span>
+              </td>
+            </tr>
+            <tr *ngFor="let duo of Duos | paginate: { itemsPerPage: 4, currentPage: page }">
+              <td>{{ duo._id }}</td>
+              <td>{{ duo.jugadorUno }} <span class="badge badge-success">{{duo.jugadorUnoDNI}}</span></td>
+              <td>{{ duo.jugadorDos }} <span class="badge badge-success">{{duo.jugadorDosDNI}}</span></td>
+            <td>
+              <swal
+              #deleteSwal
+              title="Seguro eliminaras esta pareja?"
+              text="Este equipo se borrara"
+              icon="question"
+              [showCancelButton]="true"
+              [focusCancel]="true"
+              (confirm)="deleteDuo(duo._id)"
+              [swalOptions]="{ confirmButtonText: 'Si Borrar', cancelButtonText:'Cancelar' }">
+            </swal>
+              <button class="btn btn-danger" [swal]="deleteSwal">Borrar Pareja</button>
+              </td>
+            </tr>
+            <tr *ngIf="Duos" colspan="3" class="text-center p-4" >
+              <pagination-controls class="align-content-center" (pageChange)="page = $event"></pagination-controls>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 </section>

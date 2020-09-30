@@ -37,7 +37,7 @@ export class ListarTorneosComponent implements OnInit {
     });
   }
   getAllJugadores() {
-    this.dbJugadores.createIndex();
+    this.dbJugadores.createIndexId();
     this.dbJugadores.showAllPlayers().then((res) => {
       console.log(res);
       console.log('getAllJugadores' + this.allPlayers);
@@ -45,6 +45,9 @@ export class ListarTorneosComponent implements OnInit {
     }).catch((err) => {
       console.log(err);
     });
+  }
+  redirect(url) {
+    this.globales.redirecTo(url);
   }
   getAllTorneos() {
     this.dbTournament.createIndexTournament();

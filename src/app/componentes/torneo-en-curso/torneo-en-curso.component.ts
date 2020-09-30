@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DbTournamentService } from '../../services/db.tournament.service';
 import { DbJugadoresService } from '../../services/db.jugadores.service';
@@ -19,6 +19,7 @@ export class TorneoEnCursoComponent implements OnInit {
   p = 1;
   page = 1;
   players: any[];
+  playersAdded: number;
   doc: any[];
   allPlayers: any[];
   dbplayersGhost: any; // Pouch With all players for delete to into tor
@@ -98,6 +99,17 @@ export class TorneoEnCursoComponent implements OnInit {
       this.oneTor = res.docs;
     }).catch((err) => {
       console.log(err);
+    });
+  }
+  getJugadoresList(id) {
+    this.dbTournament.showUniqueTor(id).then((tor) => {
+      console.log(tor);
+      console.log(tor.docs[0].rondas.jugadoresList.length);
+      if (tor.docs[0].rondas.jugadoresList.length >= 0) {
+        this.playersAdded = tor.docs[0].rondas.jugadoresList.length;
+      } else {
+        this.playersAdded = 0;
+      }
     });
   }
   redirect(url) {
@@ -256,11 +268,21 @@ export class TorneoEnCursoComponent implements OnInit {
     });
   }
   // agrega jugador del listado player a el listado rondas.jugador
-  addPlayerAronda(player) {
-    this.dbTournament.addPlayerAronda(this.idTor, player);
-    const playerSelect = document.getElementById(player.DNI);
-    playerSelect.classList.add('d-none');
-    this.listarPlayersRondas();
+  async addPlayerAronda(player) {
+    const data = await this.dbTournament.addPlayerAronda(this.idTor, player);
+    // const playersList = this.oneTor[0].rondas.jugadoresList.length;
+    if (data === 'agregado') {
+      const playerSelect = document.getElementById(player.DNI);
+      playerSelect.classList.add('d-none');
+      this.listarPlayersRondas();
+      this.playersAdded ++;
+    }
+  }
+  validateNumberPlayersInRonda() {
+    const playersList = this.oneTor[0].rondas.jugadoresList.length;
+    if (this.playersAdded === playersList) {
+      console.log(this.playersAdded);
+    }
   }
    // wtfNumber devuelve 1 si el dato es un numero o tiene un numero
    wtfNumber(dato) {

@@ -234,19 +234,26 @@ declare var $: any;
     showTodos() {
       return this.db.allDocs({include_docs: true, descending: true});
     }
+    /*
+    Se cuentan los jugadores, se agregan a jugadoresList y se borran de players */
     addPlayerAronda(torId, player) {
-      this.db.get(torId).then((doc) => {
-        const n = doc.rondas.jugadores.length;
-        for ( let i = 0; i <= n; i++ ) {
-          if ( i === n) {
-            doc.rondas.jugadores[i] = player;
-            doc.rondas.jugadoresList[i] = player;
+      return new Promise ((result, reject) => {
+        this.db.get(torId).then((doc) => {
+          const n = doc.rondas.jugadores.length;
+          for ( let i = 0; i <= n; i++ ) {
+            if ( i === n) {
+              doc.rondas.jugadores[i] = player;
+              doc.rondas.jugadoresList[i] = player;
+            }
           }
-        }
-        return this.db.put(doc).then((res) => {
-          if (res.ok === true) {
-            this.deletePlayerToRoda(torId, player);
-          }
+          return this.db.put(doc).then((res) => {
+            if (res.ok === true) {
+              this.deletePlayerToRoda(torId, player);
+              result ('agregado');
+            }
+          });
+        }).catch((err) => {
+          reject (err);
         });
       });
     }

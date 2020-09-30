@@ -25,7 +25,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.dbJugadores.createIndex();
+    $('#login').modal('show');
+    this.dbJugadores.createIndexId();
     this.dbTournament.createIndexTournament();
     this.eventToast = this.globales.toastEvent.subscribe((e) => {
       // alert('aqui esta la toast');

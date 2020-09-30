@@ -1,24 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { DbJugadoresService } from '../../services/db.jugadores.service';
-import { SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
+import pouchDB from 'pouchdb';
+pouchDB.plugin(require('pouchdb-find'));
+// import { SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import countries from 'src/assets/json/countries.json';
 import states from 'src/assets/json/states.json';
 import cities from 'src/assets/json/cities.json';
+import { Rankings } from '../../services/rankings.service';
+import Swal from 'sweetalert2';
 declare var $: any;
+
 @Component({
   selector: 'app-listar-jugador',
   templateUrl: './listar-jugador.component.html',
   styleUrls: ['./listar-jugador.component.css']
 })
 export class ListarJugadorComponent implements OnInit {
+  page = 1;
   todos: any[];
   UpdateJugador: FormGroup;
   remoteDb;
   Countries: any [] = countries;
   States: any [] = states;
   Cities: any [] = cities;
-  player: any [];
+  playerOne: any;
+  mailInUse;
+  playerJson = {};
   allPlayers: any [];
   searchPlayers: any [];
 
@@ -29,27 +37,26 @@ export class ListarJugadorComponent implements OnInit {
 
   constructor(
     private db: DbJugadoresService,
-    public readonly swalTargets: SwalPortalTargets,
+    private Ranking: Rankings,
+    // public readonly swalTargets: SwalPortalTargets,
     private builder: FormBuilder,
     ) {
       this.UpdateJugador = this.builder.group({
-        name: [' ', Validators.required],
-        lastName: [' ', Validators.required],
-        cc: [' ', Validators.required],
-        mail: [' ', Validators.compose([Validators.email, Validators.required])],
-        phone: [' ', Validators.compose([Validators.minLength(10), Validators.required])],
-        address: [' ', Validators.required],
-        nameCountry: [' ', Validators.required],
-        nameState: [' ', Validators.required],
-        nameCity: [' ', Validators.required],
-        selectedCountry: [' ', Validators.required],
-        selectedState: [' ', Validators.required],
-        selectedCity: [' ', Validators.required],
+        name: ['', Validators.required],
+        lastName: ['', Validators.required],
+        cc: ['', Validators.required],
+        mail: ['', Validators.compose([Validators.email, Validators.required])],
+        celular: ['', Validators.compose([Validators.minLength(10), Validators.required])],
+        direccion: ['', Validators.required],
+        nameCountry: ['', Validators.required],
+        nameState: ['', Validators.required],
+        nameCity: ['', Validators.required],
       });
     }
   ngOnInit() {
     this.getTodos();
     this.getAllJugadores();
+    this.db.allSyncDb();
     /*this.db.remoteDb.changes({
       since: 'now',
       live: true,
@@ -75,7 +82,43 @@ export class ListarJugadorComponent implements OnInit {
     }).catch((err) => {
       console.log(err);
     });
-
+  }
+  getOnePlayer(dni) {
+    this.db.showPlayerDNI(dni).then((doc) => {
+      this.playerOne = doc.docs[0];
+      const playerNew = {
+        _id: this.playerOne._id,
+        _rev: this.playerOne._rev,
+        nombre: this.playerOne.nombre,
+        apellido: this.playerOne.apellido,
+        DNI: this.playerOne.DNI,
+        mail: this.playerOne.mail,
+        celular: this.playerOne.celular,
+        direccion: this.playerOne.direccion,
+        pais: this.playerOne.pais,
+        estado: this.playerOne.estado,
+        ciudad: this.playerOne.ciudad,
+        password: this.playerOne.password,
+        id_team: this.playerOne.id_team,
+        nombre_equipo: this.playerOne.nombre_equipo,
+        id_club: this.playerOne.id_club,
+        nombre_club: this.playerOne.nombre_club,
+        id_pareja: this.playerOne.id_pareja,
+        nombre_pareja: this.playerOne.nombre_pareja,
+        duoId: this.playerOne.duoId,
+        torneos: this.playerOne.torneos,
+      };
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+  validateDuo(id) {
+    console.log(id);
+    this.db.showPlayerId(id).then((response) => {
+     console.log(response);
+   }).catch((err) => {
+     console.log(err);
+   });
   }
   getAllJugadores() {
     // this.db.createIndex();
@@ -86,6 +129,213 @@ export class ListarJugadorComponent implements OnInit {
     }).catch((err) => {
       console.log(err);
     });
+  }
+  // update player data OLD!!
+  add(IDBD, datos, country, state, city) {
+    console.log(IDBD);
+    this.db.addOne(IDBD, datos, country, state, city);
+    console.log(IDBD, datos, country, state, city);
+  }
+  // update player data NEW!!
+  updatePlayerJson(value, dato) {
+    console.log(this.playerJson[value]);
+    console.log(dato);
+    // this.playerJson[value] = dato;
+  }
+  validateDato(datoNew, datoOld) {
+    if (datoNew === '') {
+      return datoOld;
+    } else if (datoNew !== '') {
+      return datoNew;
+    }
+  }
+  toMayusculas(e) {
+    e.value = e.value.toUpperCase();
+    }
+  updatePlayerData(data, playerDni) {
+    this.db.showPlayerDNI(playerDni).then((doc) => {
+      this.playerOne = doc.docs[0];
+      console.log(this.playerOne);
+      const playerNew = {
+        _id: this.playerOne._id,
+        _rev: this.playerOne._rev,
+        nombre: this.playerOne.nombre,
+        apellido: this.playerOne.apellido,
+        DNI: this.playerOne.DNI,
+        mail: this.playerOne.mail,
+        celular: this.playerOne.celular,
+        direccion: this.playerOne.direccion,
+        pais: this.playerOne.pais,
+        estado: this.playerOne.estado,
+        ciudad: this.playerOne.ciudad,
+        password: this.playerOne.password,
+        id_team: this.playerOne.id_team,
+        nombre_equipo: this.playerOne.nombre_equipo,
+        id_club: this.playerOne.id_club,
+        nombre_club: this.playerOne.nombre_club,
+        id_pareja: this.playerOne.id_pareja,
+        nombre_pareja: this.playerOne.nombre_pareja,
+        duoId: this.playerOne.duoId,
+        torneos: this.playerOne.torneos,
+      };
+      console.log(playerNew);
+      const playerPut = {
+        _id: this.playerOne._id,
+        _rev: this.playerOne._rev,
+        nombre: this.validateDato(data.name, this.playerOne.nombre),
+        apellido: this.validateDato(data.lastName, this.playerOne.apellido),
+        DNI: this.validateDato(data.cc, +this.playerOne.DNI),
+        mail: this.validateDato(data.mail, this.playerOne.mail),
+        celular: this.validateDato(data.celular, this.playerOne.celular),
+        direccion: this.validateDato(data.direccion, this.playerOne.direccion),
+        pais: this.validateDato(data.nameCountry, this.playerOne.pais),
+        estado: this.validateDato(data.nameState, this.playerOne.estado),
+        ciudad: this.validateDato(data.nameCity, this.playerOne.ciudad),
+        password: this.playerOne.password,
+        id_team: this.playerOne.id_team,
+        nombre_equipo: this.playerOne.nombre_equipo,
+        id_club: this.playerOne.id_club,
+        nombre_club: this.playerOne.nombre_club,
+        id_pareja: this.playerOne.id_pareja,
+        nombre_pareja: this.playerOne.nombre_pareja,
+        duoId: this.playerOne.duoId,
+        torneos: this.playerOne.torneos,
+      };
+      console.log(playerPut);
+      this.savePlayerData(playerPut);
+    });
+    console.log(data);
+    console.log(playerDni);
+  }
+  savePlayerData(data) {
+    this.db.savePlayer(data);
+    // actualiza datos en ranking
+    this.Ranking.getRanking(data._id).then((playerR) => {
+      // console.log(playerR);
+      const pts = playerR.puntos;
+      const tors = playerR.torneos;
+      const user = {
+        _id: data._id,
+        _rev: playerR._rev,
+        dni: data.DNI,
+        nombre: data.nombre,
+        puntos: pts,
+        torneos: tors
+      };
+      this.Ranking.dbRanking.put(user).then((response) => {
+        if (response.ok === true) {
+          Swal.fire({
+            title: 'Jugador Actualizado en Ranking',
+            text: 'Los datos se actualizaron en base de datos ranking',
+            icon: 'success',
+            confirmButtonText: 'Genial!',
+          });
+        }
+      });
+      console.log(user);
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+  disEnable(disableId, enableId) {
+    document.getElementById(disableId).classList.add('d-none');
+    document.getElementById(enableId).classList.remove('d-none');
+  }
+  updatePlayerClick(playerId, nameInput) {
+    const smaller = document.getElementById(playerId + nameInput + 'Small');
+    const input1 = document.getElementById(playerId + nameInput + 'Input1');
+    const input2 = document.getElementById(playerId + nameInput + 'Input2');
+    input1.classList.add('d-none');
+    input2.classList.remove('d-none');
+    input2.focus();
+    smaller.classList.remove('d-none');
+  }
+  updatePlayerBlur(playerId, nameInput, cambio) {
+    const smaller = document.getElementById(playerId + nameInput + 'Small');
+    const input1 = document.getElementById(playerId + nameInput + 'Input1');
+    const input2 = document.getElementById(playerId + nameInput + 'Input2');
+    if (cambio === '') {
+      smaller.classList.add('d-none');
+      input2.classList.add('d-none');
+      input1.classList.remove('d-none');
+    } else if (cambio !== '') {
+      console.log('nothing else');
+      console.log(cambio);
+    }
+  }
+  validateExistingMail(playerId, mail) {
+    const inputMail = document.getElementById(playerId + 'mailInput2');
+    const input1 = document.getElementById(playerId + 'mailInput1');
+    const smaller = document.getElementById(playerId + 'mailSmall');
+    const error = document.getElementById('mailError');
+    const vacio = document.getElementById('mailEmpity');
+    const ok = document.getElementById('mailSuccess');
+    const mailCorrect = this.validateEmail(mail);
+      // si mail viene vacio
+    if (mail === '') {
+        smaller.classList.add('d-none');
+        input1.classList.remove('d-none');
+        inputMail.classList.add('d-none');
+        error.classList.add('d-none');
+        vacio.classList.add('d-none');
+        // si mail viene con length + 1
+      }
+    if (mail.length > 1 && mailCorrect === false) {
+        // correo mal escrito
+        console.log('mal escrito');
+        smaller.classList.remove('d-none');
+        input1.classList.add('d-none');
+        inputMail.classList.remove('d-none');
+        vacio.classList.remove('d-none');
+        error.classList.add('d-none');
+        ok.classList.add('d-none');
+        inputMail.classList.remove('is-valid');
+        inputMail.classList.add('is-invalid');
+      }
+    if ( mail.length > 1 && mailCorrect === true ) {
+        this.emailInUse(mail).then((response) => {
+          const mailUsed = response;
+          console.log(mailUsed);
+          if (mailUsed === false) {
+             // correo bien, pero mail esta en uso
+            console.log('mail en uso');
+            smaller.classList.remove('d-none');
+            input1.classList.add('d-none');
+            inputMail.classList.remove('d-none');
+            vacio.classList.add('d-none');
+            error.classList.remove('d-none');
+            ok.classList.add('d-none');
+            inputMail.classList.remove('is-valid');
+            inputMail.classList.add('is-invalid');
+          } else if (mailUsed === true) {
+            // mail correcto y esta libre
+            console.log('todo Ok');
+            smaller.classList.remove('d-none');
+            input1.classList.add('d-none');
+            inputMail.classList.remove('d-none');
+            vacio.classList.add('d-none');
+            error.classList.add('d-none');
+            inputMail.classList.remove('is-invalid');
+            inputMail.classList.add('is-valid');
+            ok.classList.remove('d-none');
+          }
+        });
+      }
+  }
+  emailInUse(mail) {
+    // retorna false si el mail ya existe
+      return this.db.showTodos().then((players) => {
+        const n = players.rows.length;
+        console.log('Players conteo = ' + n);
+        for (let i = 0; i < n; i++) {
+          if (mail === players.rows[i].doc.mail) {
+           return false;
+          }
+        }
+        return true;
+      }).catch((err) => {
+        console.log(err);
+      });
   }
   searchPlayer(dato: any) {
     // this.db.createIndex();
@@ -114,14 +364,27 @@ export class ListarJugadorComponent implements OnInit {
     this.db.borrarIndexes();
   }
   deleteOne(id) {
-    this.db.deletePlayer(id);
+    this.db.deletePlayer(id).then((res) => {
+      if (res.ok === true) {
+        this.Ranking.deletePlayerInRanking(id).then((response) => {
+          if (response.ok === true) {
+            Swal.fire({
+              title: 'Registro Eliminado!',
+              text: 'Se borro Exitosamente!',
+              icon: 'success',
+              confirmButtonText: 'Genial!',
+            });
+          }
+        });
+      }
+    });
     this.getAllJugadores();
   }
   deleteTodo(todo) {
     this.db.deleteTodo(todo);
     this.getTodos();
   }
-  addAddress(idCountry: number, idState: number, idCity: string){
+  addAddress(idCountry: number, idState: number, idCity: string) {
     const control = 2;
     const txtCountry = document.getElementById('nameCountry');
     const txtState = document.getElementById('nameState');
@@ -129,7 +392,8 @@ export class ListarJugadorComponent implements OnInit {
     const countryName = countries.find((pais) => {
       return pais.id === Number(idCountry);
     });
-    if ( control === 2) { txtCountry.innerHTML = countryName.name;
+    if ( control === 2) {
+      txtCountry.innerHTML = countryName.name;
         } else { console.log(countryName); }
 
     const stateName = states.find((state) => {
@@ -150,8 +414,7 @@ export class ListarJugadorComponent implements OnInit {
       console.log (data2);
       return data2;
     }
-      }
-
+  }
   onSelectCountry(id: number) {
     this.selectedCountry = id;
     this.selectedState = 0;
@@ -180,11 +443,6 @@ export class ListarJugadorComponent implements OnInit {
     const datofinal = document.getElementById(dato).innerHTML;
     return datofinal;
   }
-  add(IDBD, datos, country, state, city) {
-    console.log(IDBD);
-    this.db.addOne(IDBD, datos, country, state, city);
-    console.log(IDBD, datos, country, state, city);
-  }
   eraseForm() {
     return this.UpdateJugador.reset();
   }
@@ -198,5 +456,11 @@ export class ListarJugadorComponent implements OnInit {
    }
     return 0;
   }
+  validateEmail(mail) {
+    // tslint:disable-next-line: max-line-length
+    const emailPattern = (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    return emailPattern.test(mail);
+  }
+
 
 }
