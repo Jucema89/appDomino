@@ -8,7 +8,6 @@ pouchDB.plugin(require('pouchdb-find'));
 import Swal from 'sweetalert2';
 
 declare var $: any;
-// user admin; pass = ZcfF#T8SP14T
 
 @Injectable({
   providedIn: 'root'
