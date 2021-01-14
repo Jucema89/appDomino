@@ -1,4 +1,4 @@
-# DominoPouch CORE
+# DominoApp CORE
 Este Proyecto ha sido generado con [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
 
 App Domino es una aplicacion para gestion de torneos de domino, este es su core en Angular, aqui encontraras:
